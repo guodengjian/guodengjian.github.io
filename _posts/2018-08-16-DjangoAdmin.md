@@ -5,7 +5,7 @@ date: 2018-08-16
 description: "Django-Admin"
 tag: Django 
 --- 
-## django-admin组件
+### django-admin组件
 
 >创建超级用户`python manage.py createsuperuser`
 
