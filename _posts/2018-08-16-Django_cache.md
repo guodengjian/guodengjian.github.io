@@ -258,10 +258,8 @@ from .models import *
 
 
 def index(request):
-
      t=time.time()      #获取当前时间
      bookList=Book.objects.all()
-
      return render(request,"index.html",locals())
 ```
 模板
