@@ -14,6 +14,7 @@ tag: Django
 
 ### admin.ModelAdmin方法提供大量的可定制功能
 1. list_display,定制显示的列
+
 ```python
 class Useradmin(admin.ModelAdmin):
     list_display = [nid,name,...,]
@@ -25,6 +26,7 @@ admin.site.register(modles.UserInfo,Useradmin)
 3. list_filter,定制右侧快速筛选(一般将筛选字段设置为一对多，多对多字段)
 4. search_fields,定制模糊搜索功能(可以设置多个字段为搜索对象)
 5. action,定制action中的操作
+
 ```python
 
 class UserAdmin(admin.ModelAdmin):
@@ -52,14 +54,17 @@ class UserAdmin(admin.ModelAdmin):
 ### admin组件源码分析
 1. 启动
 > 执行每一个app下的admin.py文件
+
 ```
 #源码，通过这个函数自动执行
 def autodiscover():
     autodiscover_modules('admin', register_to=site)
 ```
+
 2. 注册
 >admin.site.register(modles.UserInfo,Useradmin)
 >源码：`site = AdminSite()`,django中的注册所用到的site都是同一个对象。---具体参考python的单例模式
+
 ```
 #源码，注册流程
 
@@ -80,12 +85,14 @@ class ModelStark(): # 配置类对象
 
 
 ```
+
 总结：
     通过源码可以得出，self.registry中存放的是：models中的数据类，以及配置类的子类(指的是models的自定义配置类)的对象
     
 3. 设计URL
 >储备知识：
     拓展Url的方式：
+
 ```
     url(r'^index/',([
         url(r'^add/$',view.xxx),
@@ -93,13 +100,16 @@ class ModelStark(): # 配置类对象
         url(r'^change/$',view.xxx),
         ],None,None)
 ```
+
 >可以顺利访问的url：http://index/add/
 >如何拿到app的名字和注册到admin的数据表名(modles的类名)
+
 ```
 model._meta.app_label, model._meta.model_name
 ```
 
 源码部分：
+
 ```python
 
     @property
@@ -112,8 +122,10 @@ model._meta.app_label, model._meta.model_name
                 ]
         return urlpatterns
 ```
+
 说明：admin组件会为每个注册的model生成增删改查四个对应的url，上述源码只是生成了一级url。
 二级路由生成源码：
+
 ```python
 class ModelAdmin(BaseModelAdmin):
     def get_urls(self):
