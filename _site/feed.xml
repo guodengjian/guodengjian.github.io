@@ -5,13 +5,353 @@
     <description>欢迎来到我的个人站~</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Aug 2018 14:48:11 +0800</pubDate>
-    <lastBuildDate>Thu, 16 Aug 2018 14:48:11 +0800</lastBuildDate>
+    <pubDate>Thu, 16 Aug 2018 15:42:52 +0800</pubDate>
+    <lastBuildDate>Thu, 16 Aug 2018 15:42:52 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
+        <title>DjangoCache</title>
+        <description>&lt;h3 id=&quot;缓存的简介&quot;&gt;缓存的简介&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;在动态网站中,用户所有的请求,服务器都会去数据库中进行相应的增,删,查,改,渲染模板,执行业务逻辑,最后生成用户看到的页面.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;当一个网站的用户访问量很大的时候,每一次的的后台操作,都会消耗很多的服务端资源,所以必须使用缓存来减轻后端服务器的压力.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;缓存是将一些常用的数据保存内存或者memcache中,在一定的时间内有人来访问这些数据时,则不再去执行数据库及渲染等操作,而是直接从内存或memcache的缓存中去取得数据,然后返回给用户.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;django提供了6中缓存方式&quot;&gt;Django提供了6中缓存方式&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;开发调试缓存&lt;/li&gt;
+  &lt;li&gt;内存缓存&lt;/li&gt;
+  &lt;li&gt;文件缓存&lt;/li&gt;
+  &lt;li&gt;数据库缓存&lt;/li&gt;
+  &lt;li&gt;Memcache缓存(使用python-memcached模块)&lt;/li&gt;
+  &lt;li&gt;Memcache缓存(使用pylibmc模块)
+经常使用的有文件缓存和Mencahe缓存&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;各种缓存配置&quot;&gt;各种缓存配置&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;开发调试(此模式为开发调试使用，实际上不执行任何操作)
+    &lt;blockquote&gt;
+      &lt;p&gt;settings.py文件配置&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;CACHES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'BACKEND'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'django.core.cache.backends.dummy.DummyCache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 缓存后台使用的引擎&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'TIMEOUT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;            &lt;span class=&quot;c&quot;&gt;# 缓存超时时间（默认300秒，None表示永不过期，0表示立即过期）&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'OPTIONS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'MAX_ENTRIES'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# 最大缓存记录的数量（默认300）&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'CULL_FREQUENCY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;内存缓存(将缓存内容保存至内存区域中)
+    &lt;blockquote&gt;
+      &lt;p&gt;settings.py文件配置&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;CACHES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'BACKEND'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'django.core.cache.backends.locmem.LocMemCache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 指定缓存使用的引擎&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'unique-snowflake'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# 写在内存中的变量的唯一值 &lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'TIMEOUT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;             &lt;span class=&quot;c&quot;&gt;# 缓存超时时间(默认为300秒,None表示永不过期)&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'OPTIONS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'MAX_ENTRIES'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;# 最大缓存记录的数量（默认300）&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'CULL_FREQUENCY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;  
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;文件缓存(把缓存数据存储在文件中)
+    &lt;blockquote&gt;
+      &lt;p&gt;settings.py文件配置&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;CACHES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'BACKEND'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'django.core.cache.backends.filebased.FileBasedCache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#指定缓存使用的引擎&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'/var/tmp/django_cache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;#指定缓存的路径&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'TIMEOUT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;              &lt;span class=&quot;c&quot;&gt;#缓存超时时间(默认为300秒,None表示永不过期)&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'OPTIONS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'MAX_ENTRIES'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;            &lt;span class=&quot;c&quot;&gt;# 最大缓存记录的数量（默认300）&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'CULL_FREQUENCY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;# 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;   
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;数据库缓存(把缓存数据存储在数据库中)
+    &lt;blockquote&gt;
+      &lt;p&gt;settings.py文件配置&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;CACHES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'BACKEND'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'django.core.cache.backends.db.DatabaseCache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 指定缓存使用的引擎&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'cache_table'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# 数据库表    &lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'OPTIONS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'MAX_ENTRIES'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;# 最大缓存记录的数量（默认300）&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'CULL_FREQUENCY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;  
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;   
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;注意，创建缓存的数据库表使用的语句：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;python manage.py createcachetable&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Memcache缓存(使用python-memcached模块连接memcache)
+    &lt;blockquote&gt;
+      &lt;p&gt;Memcached是Django原生支持的缓存系统.要使用Memcached,需要下载Memcached的支持库python-memcached或pylibmc.
+settings.py文件配置&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;CACHES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'BACKEND'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'django.core.cache.backends.memcached.MemcachedCache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 指定缓存使用的引擎&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'192.168.10.100:11211'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# 指定Memcache缓存服务器的IP地址和端口&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'OPTIONS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'MAX_ENTRIES'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;            &lt;span class=&quot;c&quot;&gt;# 最大缓存记录的数量（默认300）&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'CULL_FREQUENCY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;# 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;LOCATION也可以配置成如下:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'unix:/tmp/memcached.sock'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# 指定局域网内的主机名加socket套接字为Memcache缓存服务器&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# 指定一台或多台其他主机ip地址加端口为Memcache缓存服务器&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'192.168.10.100:11211'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'192.168.10.101:11211'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'192.168.10.102:11211'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Memcache缓存(使用pylibmc模块连接memcache)
+    &lt;blockquote&gt;
+      &lt;p&gt;settings.py文件配置&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;settings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;文件配置&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;CACHES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'BACKEND'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'django.core.cache.backends.memcached.PyLibMCCache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 指定缓存使用的引擎&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'192.168.10.100:11211'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# 指定本机的11211端口为Memcache缓存服务器&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'OPTIONS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'MAX_ENTRIES'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;            &lt;span class=&quot;c&quot;&gt;# 最大缓存记录的数量（默认300）&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'CULL_FREQUENCY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;# 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;  
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;LOCATION也可以配置成如下:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'/tmp/memcached.sock'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 指定某个路径为缓存目录&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# 分布式缓存,在多台服务器上运行Memcached进程,程序会把多台服务器当作一个单独的缓存,而不会在每台服务器上复制缓存值&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'192.168.10.100:11211'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'192.168.10.101:11211'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'192.168.10.102:11211'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Memcached是基于内存的缓存,数据存储在内存中.所以如果服务器死机的话,数据就会丢失,所以Memcached一般与其他缓存配合使用&lt;/p&gt;
+
+&lt;h2 id=&quot;django中的缓存应用&quot;&gt;Django中的缓存应用&lt;/h2&gt;
+&lt;p&gt;Django提供了不同粒度的缓存,可以缓存某个页面,可以只缓存一个页面的某个部分,甚至可以缓存整个网站.
+数据库：&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Book&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CharField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;price&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DecimalField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_digits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decimal_places&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;视图：&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.views.decorators.cache&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache_page&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;.models&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@cache_page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;#超时时间为15秒&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+
+ &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;#获取当前时间&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;bookList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Book&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;objects&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;模板：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-Html&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&quot;en&quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&quot;UTF-8&quot;&amp;gt;
+    &amp;lt;title&amp;gt;Title&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h3&amp;gt;当前时间:-----&amp;lt;/h3&amp;gt;
+
+&amp;lt;ul&amp;gt;
+    
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上面的例子是基于内存的缓存配置，基于文件的缓存该怎么配置呢？&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;更改settings.py的配置&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;CACHES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;s&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'BACKEND'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'django.core.cache.backends.filebased.FileBasedCache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 指定缓存使用的引擎&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'LOCATION'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'E:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;django_cache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# 指定缓存的路径&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'TIMEOUT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;              &lt;span class=&quot;c&quot;&gt;# 缓存超时时间(默认为300秒,None表示永不过期)&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;'OPTIONS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'MAX_ENTRIES'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;            &lt;span class=&quot;c&quot;&gt;# 最大缓存记录的数量（默认300）&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;'CULL_FREQUENCY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;# 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;全站使用缓存&quot;&gt;全站使用缓存&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;既然是全站缓存,当然要使用Django中的中间件.
+用户的请求通过中间件,经过一系列的认证等操作,如果请求的内容在缓存中存在,则使用FetchFromCacheMiddleware获取内容并返回给用户
+当返回给用户之前,判断缓存中是否已经存在,如果不存在,则UpdateCacheMiddleware会将缓存保存至Django的缓存之中,以实现全站缓存&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 缓存整个站点，是最简单的缓存方法&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;在&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MIDDLEWARE_CLASSES&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;中加入&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;和&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;中间件&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;MIDDLEWARE_CLASSES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;‘&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;django&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;middleware&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UpdateCacheMiddleware&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;’&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#第一&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.middleware.common.CommonMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;‘&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;django&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;middleware&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FetchFromCacheMiddleware&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;’&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#最后&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;必须配置在第一个&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;必须配置在最后一个&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;修改settings.py配置文件&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;MIDDLEWARE_CLASSES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.middleware.cache.UpdateCacheMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;#响应HttpResponse中设置几个headers&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.contrib.sessions.middleware.SessionMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.middleware.common.CommonMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.middleware.csrf.CsrfViewMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.contrib.auth.middleware.AuthenticationMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.contrib.auth.middleware.SessionAuthenticationMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.contrib.messages.middleware.MessageMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.middleware.clickjacking.XFrameOptionsMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.middleware.security.SecurityMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'django.middleware.cache.FetchFromCacheMiddleware'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;#用来缓存通过GET和HEAD方法获取的状态码为200的响应&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;CACHE_MIDDLEWARE_SECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;视图：&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.views.decorators.cache&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache_page&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;.models&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+
+     &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;#获取当前时间&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;bookList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Book&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;objects&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;#获取当前时间&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpResponse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;HELLO:&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;其余代码不变,刷新浏览器是10秒,页面上的时间变化一次,这样就实现了全站缓存.&lt;/p&gt;
+
+&lt;h3 id=&quot;局部视图缓存&quot;&gt;局部视图缓存&lt;/h3&gt;
+&lt;p&gt;刷新页面时,整个网页有一部分实现缓存
+views视图函数&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.views.decorators.cache&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache_page&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;.models&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;bookList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Book&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;objects&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;模板&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 模板语言冲突， --&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;lang=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;en&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;charset=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;UTF-8&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Title&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;h3&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;style=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;color: green&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;不缓存:-----&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
+
+
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;缓存:-----:&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
+
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 16 Aug 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2018/08/DjangoCache/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/08/DjangoCache/</guid>
+        
+        <category>Django</category>
+        
+        
+      </item>
+    
+      <item>
         <title>Django-Admin</title>
-        <description>&lt;h2 id=&quot;django-admin组件&quot;&gt;django-admin组件&lt;/h2&gt;
+        <description>&lt;h3 id=&quot;django-admin组件&quot;&gt;django-admin组件&lt;/h3&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;创建超级用户&lt;code class=&quot;highlighter-rouge&quot;&gt;python manage.py createsuperuser&lt;/code&gt;&lt;/p&gt;
@@ -24,38 +364,41 @@
 
 &lt;h3 id=&quot;adminmodeladmin方法提供大量的可定制功能&quot;&gt;admin.ModelAdmin方法提供大量的可定制功能&lt;/h3&gt;
 &lt;ol&gt;
-  &lt;li&gt;list_display,定制显示的列
-```python
-class Useradmin(admin.ModelAdmin):
- list_display = [nid,name,…,]&lt;/li&gt;
+  &lt;li&gt;list_display,定制显示的列&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;admin.site.register(modles.UserInfo,Useradmin)&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Useradmin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;admin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModelAdmin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list_display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,]&lt;/span&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2. list_display_links,定制点击列可以跳转(显示为a标签)
-3. list_filter,定制右侧快速筛选(一般将筛选字段设置为一对多，多对多字段)
-4. search_fields,定制模糊搜索功能(可以设置多个字段为搜索对象)
-5. action,定制action中的操作
-```python
+&lt;span class=&quot;n&quot;&gt;admin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;modles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UserInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Useradmin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-class UserAdmin(admin.ModelAdmin):
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol&gt;
+  &lt;li&gt;list_display_links,定制点击列可以跳转(显示为a标签)&lt;/li&gt;
+  &lt;li&gt;list_filter,定制右侧快速筛选(一般将筛选字段设置为一对多，多对多字段)&lt;/li&gt;
+  &lt;li&gt;search_fields,定制模糊搜索功能(可以设置多个字段为搜索对象)&lt;/li&gt;
+  &lt;li&gt;action,定制action中的操作&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserAdmin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;admin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModelAdmin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
  
-    # 定制Action行为具体方法
-    def func(self, request, queryset):
-        print(self, request, queryset)
-        print(request.POST.getlist('_selected_action'))
+    &lt;span class=&quot;c&quot;&gt;# 定制Action行为具体方法&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;queryset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;queryset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getlist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'_selected_action'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
  
-    func.short_description = &quot;中文显示自定义Actions&quot;
-    # 可以在actions中添加多个方法
-    actions = [func, ] 
+    &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;short_description&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;中文显示自定义Actions&quot;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# 可以在actions中添加多个方法&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;actions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; 
  
-    # Action选项都是在页面上方显示
-    actions_on_top = True
-    # Action选项都是在页面下方显示
-    actions_on_bottom = False
+    &lt;span class=&quot;c&quot;&gt;# Action选项都是在页面上方显示&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;actions_on_top&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# Action选项都是在页面下方显示&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;actions_on_bottom&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
  
-    # 是否显示选择个数
-    actions_selection_counter = True
+    &lt;span class=&quot;c&quot;&gt;# 是否显示选择个数&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;actions_selection_counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -64,52 +407,72 @@ class UserAdmin(admin.ModelAdmin):
   &lt;li&gt;启动
     &lt;blockquote&gt;
       &lt;p&gt;执行每一个app下的admin.py文件&lt;/p&gt;
-      &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#源码，通过这个函数自动执行
-def autodiscover():
- autodiscover_modules('admin', register_to=site)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/div&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;注册
-    &lt;blockquote&gt;
-      &lt;p&gt;admin.site.register(modles.UserInfo,Useradmin)
-源码：&lt;code class=&quot;highlighter-rouge&quot;&gt;site = AdminSite()&lt;/code&gt;,django中的注册所用到的site都是同一个对象。—具体参考python的单例模式
-```
-#源码，注册流程&lt;/p&gt;
     &lt;/blockquote&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;class AdminSite(object):
-    def &lt;strong&gt;init&lt;/strong&gt;(self, name=’admin’):
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#源码，通过这个函数自动执行
+def autodiscover():
+    autodiscover_modules('admin', register_to=site)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;注册
+    &lt;blockquote&gt;
+      &lt;p&gt;admin.site.register(modles.UserInfo,Useradmin)
+源码：&lt;code class=&quot;highlighter-rouge&quot;&gt;site = AdminSite()&lt;/code&gt;,django中的注册所用到的site都是同一个对象。—具体参考python的单例模式&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#源码，注册流程
+
+class AdminSite(object):
+    def __init__(self, name='admin'):
         self._registry = {}  # model_class class -&amp;gt; admin_class instance
-—————————————-
+----------------------------------------
     def register(self, model_or_iterable, admin_class=None, **options):
         if not admin_class:
             admin_class = ModelAdmin #这是一个通用的配置类
-——————————————
-    self._registry[model] = admin_class(model, self)   # registry中的每一个对象有一个 self.model属性，可以直接调用models数据类&lt;/p&gt;
+------------------------------------------
+    self._registry[model] = admin_class(model, self)   # registry中的每一个对象有一个 self.model属性，可以直接调用models数据类
 
-&lt;hr /&gt;
-&lt;p&gt;class ModelStark(): # 配置类对象
-    def &lt;strong&gt;init&lt;/strong&gt;(self,model):
-        self.model=model&lt;/p&gt;
+-------------------------------------------- 
+class ModelStark(): # 配置类对象
+    def __init__(self,model):
+        self.model=model
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;总结：
-    通过源码可以得出，self.registry中存放的是：models中的数据类，以及配置类的子类(指的是models的自定义配置类)的对象
-    
-3. 设计URL
-&amp;gt;储备知识：
-    拓展Url的方式：
+
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;url(r'^index/',([
-    url(r'^add/$',view.xxx),
-    url(r'^delete/$',view.xxx),
-    url(r'^change/$',view.xxx),
-    ],None,None) ``` &amp;gt;可以顺利访问的url：http://index/add/ &amp;gt;如何拿到app的名字和注册到admin的数据表名(modles的类名) ``` model._meta.app_label, model._meta.model_name ```
+
+&lt;p&gt;总结：
+    通过源码可以得出，self.registry中存放的是：models中的数据类，以及配置类的子类(指的是models的自定义配置类)的对象&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;设计URL
+    &lt;blockquote&gt;
+      &lt;p&gt;储备知识：拓展Url的方式：&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    url(r'^index/',([
+        url(r'^add/$',view.xxx),
+        url(r'^delete/$',view.xxx),
+        url(r'^change/$',view.xxx),
+        ],None,None)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;可以顺利访问的url：http://index/add/
+如何拿到app的名字和注册到admin的数据表名(modles的类名)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;model._meta.app_label, model._meta.model_name
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;源码部分：&lt;/p&gt;
+
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
     &lt;span class=&quot;nd&quot;&gt;@property&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
@@ -121,8 +484,10 @@ def autodiscover():
                 &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;urlpatterns&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;说明：admin组件会为每个注册的model生成增删改查四个对应的url，上述源码只是生成了一级url。
 二级路由生成源码：&lt;/p&gt;
+
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ModelAdmin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BaseModelAdmin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;urlpatterns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;

@@ -167,7 +167,7 @@
   </header>
 
   <section class="post">
-    <h2 id="django-admin组件">django-admin组件</h2>
+    <h3 id="django-admin组件">django-admin组件</h3>
 
 <blockquote>
   <p>创建超级用户<code class="highlighter-rouge">python manage.py createsuperuser</code></p>
@@ -180,38 +180,41 @@
 
 <h3 id="adminmodeladmin方法提供大量的可定制功能">admin.ModelAdmin方法提供大量的可定制功能</h3>
 <ol>
-  <li>list_display,定制显示的列
-```python
-class Useradmin(admin.ModelAdmin):
- list_display = [nid,name,…,]</li>
+  <li>list_display,定制显示的列</li>
 </ol>
 
-<p>admin.site.register(modles.UserInfo,Useradmin)</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Useradmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="n">nid</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="o">...</span><span class="p">,]</span>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2. list_display_links,定制点击列可以跳转(显示为a标签)
-3. list_filter,定制右侧快速筛选(一般将筛选字段设置为一对多，多对多字段)
-4. search_fields,定制模糊搜索功能(可以设置多个字段为搜索对象)
-5. action,定制action中的操作
-```python
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">modles</span><span class="o">.</span><span class="n">UserInfo</span><span class="p">,</span><span class="n">Useradmin</span><span class="p">)</span>
 
-class UserAdmin(admin.ModelAdmin):
+</code></pre></div></div>
+<ol>
+  <li>list_display_links,定制点击列可以跳转(显示为a标签)</li>
+  <li>list_filter,定制右侧快速筛选(一般将筛选字段设置为一对多，多对多字段)</li>
+  <li>search_fields,定制模糊搜索功能(可以设置多个字段为搜索对象)</li>
+  <li>action,定制action中的操作</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">class</span> <span class="nc">UserAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
  
-    # 定制Action行为具体方法
-    def func(self, request, queryset):
-        print(self, request, queryset)
-        print(request.POST.getlist('_selected_action'))
+    <span class="c"># 定制Action行为具体方法</span>
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">'_selected_action'</span><span class="p">))</span>
  
-    func.short_description = "中文显示自定义Actions"
-    # 可以在actions中添加多个方法
-    actions = [func, ] 
+    <span class="n">func</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s">"中文显示自定义Actions"</span>
+    <span class="c"># 可以在actions中添加多个方法</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">func</span><span class="p">,</span> <span class="p">]</span> 
  
-    # Action选项都是在页面上方显示
-    actions_on_top = True
-    # Action选项都是在页面下方显示
-    actions_on_bottom = False
+    <span class="c"># Action选项都是在页面上方显示</span>
+    <span class="n">actions_on_top</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="c"># Action选项都是在页面下方显示</span>
+    <span class="n">actions_on_bottom</span> <span class="o">=</span> <span class="bp">False</span>
  
-    # 是否显示选择个数
-    actions_selection_counter = True
+    <span class="c"># 是否显示选择个数</span>
+    <span class="n">actions_selection_counter</span> <span class="o">=</span> <span class="bp">True</span>
     
 </code></pre></div></div>
 
@@ -220,52 +223,72 @@ class UserAdmin(admin.ModelAdmin):
   <li>启动
     <blockquote>
       <p>执行每一个app下的admin.py文件</p>
-      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#源码，通过这个函数自动执行
-def autodiscover():
- autodiscover_modules('admin', register_to=site)
-</code></pre></div>      </div>
-    </blockquote>
-  </li>
-  <li>注册
-    <blockquote>
-      <p>admin.site.register(modles.UserInfo,Useradmin)
-源码：<code class="highlighter-rouge">site = AdminSite()</code>,django中的注册所用到的site都是同一个对象。—具体参考python的单例模式
-```
-#源码，注册流程</p>
     </blockquote>
   </li>
 </ol>
 
-<p>class AdminSite(object):
-    def <strong>init</strong>(self, name=’admin’):
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#源码，通过这个函数自动执行
+def autodiscover():
+    autodiscover_modules('admin', register_to=site)
+</code></pre></div></div>
+
+<ol>
+  <li>注册
+    <blockquote>
+      <p>admin.site.register(modles.UserInfo,Useradmin)
+源码：<code class="highlighter-rouge">site = AdminSite()</code>,django中的注册所用到的site都是同一个对象。—具体参考python的单例模式</p>
+    </blockquote>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#源码，注册流程
+
+class AdminSite(object):
+    def __init__(self, name='admin'):
         self._registry = {}  # model_class class -&gt; admin_class instance
-—————————————-
+----------------------------------------
     def register(self, model_or_iterable, admin_class=None, **options):
         if not admin_class:
             admin_class = ModelAdmin #这是一个通用的配置类
-——————————————
-    self._registry[model] = admin_class(model, self)   # registry中的每一个对象有一个 self.model属性，可以直接调用models数据类</p>
+------------------------------------------
+    self._registry[model] = admin_class(model, self)   # registry中的每一个对象有一个 self.model属性，可以直接调用models数据类
 
-<hr />
-<p>class ModelStark(): # 配置类对象
-    def <strong>init</strong>(self,model):
-        self.model=model</p>
+-------------------------------------------- 
+class ModelStark(): # 配置类对象
+    def __init__(self,model):
+        self.model=model
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>总结：
-    通过源码可以得出，self.registry中存放的是：models中的数据类，以及配置类的子类(指的是models的自定义配置类)的对象
-    
-3. 设计URL
-&gt;储备知识：
-    拓展Url的方式：
+
 </code></pre></div></div>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>url(r'^index/',([
-    url(r'^add/$',view.xxx),
-    url(r'^delete/$',view.xxx),
-    url(r'^change/$',view.xxx),
-    ],None,None) ``` &gt;可以顺利访问的url：http://index/add/ &gt;如何拿到app的名字和注册到admin的数据表名(modles的类名) ``` model._meta.app_label, model._meta.model_name ```
+
+<p>总结：
+    通过源码可以得出，self.registry中存放的是：models中的数据类，以及配置类的子类(指的是models的自定义配置类)的对象</p>
+
+<ol>
+  <li>设计URL
+    <blockquote>
+      <p>储备知识：拓展Url的方式：</p>
+    </blockquote>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    url(r'^index/',([
+        url(r'^add/$',view.xxx),
+        url(r'^delete/$',view.xxx),
+        url(r'^change/$',view.xxx),
+        ],None,None)
+</code></pre></div></div>
+
+<blockquote>
+  <p>可以顺利访问的url：http://index/add/
+如何拿到app的名字和注册到admin的数据表名(modles的类名)</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>model._meta.app_label, model._meta.model_name
 </code></pre></div></div>
 
 <p>源码部分：</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -277,8 +300,10 @@ def autodiscover():
                 <span class="p">]</span>
         <span class="k">return</span> <span class="n">urlpatterns</span>
 </code></pre></div></div>
+
 <p>说明：admin组件会为每个注册的model生成增删改查四个对应的url，上述源码只是生成了一级url。
 二级路由生成源码：</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ModelAdmin</span><span class="p">(</span><span class="n">BaseModelAdmin</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">get_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
@@ -366,6 +391,11 @@ def autodiscover():
 
        <ul class="pager">
         
+        
+        <li class="next">
+            <a href="/2018/08/DjangoCache/" data-toggle="tooltip" data-placement="top" title="DjangoCache">下一篇：  <span>DjangoCache</span>
+            </a>
+        </li>
         
     </ul>
 </section>

@@ -279,18 +279,18 @@ from django.views.decorators.cache import cache_page
 import time
 from .models import *
 
-
 def index(request):
+    t=time.time() 
+    bookList=Book.objects.all()
 
-     t=time.time()      #获取当前时间
-     bookList=Book.objects.all()
-
-     return render(request,"index.html",locals())
+    return render(request,"index.html",locals())
 ```
+
 模板
 
 ```html
-{% load cache %}
+{% comment %} {% load cache %} {% endcomment %}
+<!-- 模板语言冲突，jekyll错误识别，注释掉 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -300,9 +300,9 @@ def index(request):
 <body>
  <h3 style="color: green">不缓存:-----{{ t }}</h3>
 
-{% cache 2 'name' %}
+{% comment %} {% cache 2 'name' %} {% endcomment %}
  <h3>缓存:-----:{{ t }}</h3>
-{% endcache %}
+{% comment %} {% endcache %} {% endcomment %}
 
 </body>
 </html>
