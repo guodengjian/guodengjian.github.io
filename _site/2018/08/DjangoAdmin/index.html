@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>个人博客测试</title>
-  <meta name="description" content="博客测试">
+  <title>Django-Admin</title>
+  <meta name="description" content="django-admin组件">
   <meta name="author" content="leopardpan">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="个人博客测试">
-  <meta name="twitter:description" content="博客测试">
+  <meta name="twitter:title" content="Django-Admin">
+  <meta name="twitter:description" content="django-admin组件">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="个人博客测试">
-  <meta property="og:description" content="博客测试">
+  <meta property="og:title" content="Django-Admin">
+  <meta property="og:description" content="django-admin组件">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2018/08/Django_cache/">
+  <link rel="canonical" href="http://localhost:4000/2018/08/DjangoAdmin/">
   <link rel="alternate" type="application/rss+xml" title="guodengjian" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -156,7 +156,7 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">个人博客测试</h1>
+    <h1 class="post-title">Django-Admin</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="2018-08-16 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-08-16</time>  
@@ -167,7 +167,137 @@
   </header>
 
   <section class="post">
-    <p>博客测试</p>
+    <h2 id="django-admin组件">django-admin组件</h2>
+
+<blockquote>
+  <p>创建超级用户<code class="highlighter-rouge">python manage.py createsuperuser</code></p>
+</blockquote>
+
+<h3 id="admin组件的定制">admin组件的定制</h3>
+<blockquote>
+  <p>注册modles：<code class="highlighter-rouge">admin.site.register(modles.UserInfo)</code></p>
+</blockquote>
+
+<h3 id="adminmodeladmin方法提供大量的可定制功能">admin.ModelAdmin方法提供大量的可定制功能</h3>
+<ol>
+  <li>list_display,定制显示的列
+```python
+class Useradmin(admin.ModelAdmin):
+ list_display = [nid,name,…,]</li>
+</ol>
+
+<p>admin.site.register(modles.UserInfo,Useradmin)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2. list_display_links,定制点击列可以跳转(显示为a标签)
+3. list_filter,定制右侧快速筛选(一般将筛选字段设置为一对多，多对多字段)
+4. search_fields,定制模糊搜索功能(可以设置多个字段为搜索对象)
+5. action,定制action中的操作
+```python
+
+class UserAdmin(admin.ModelAdmin):
+ 
+    # 定制Action行为具体方法
+    def func(self, request, queryset):
+        print(self, request, queryset)
+        print(request.POST.getlist('_selected_action'))
+ 
+    func.short_description = "中文显示自定义Actions"
+    # 可以在actions中添加多个方法
+    actions = [func, ] 
+ 
+    # Action选项都是在页面上方显示
+    actions_on_top = True
+    # Action选项都是在页面下方显示
+    actions_on_bottom = False
+ 
+    # 是否显示选择个数
+    actions_selection_counter = True
+    
+</code></pre></div></div>
+
+<h3 id="admin组件源码分析">admin组件源码分析</h3>
+<ol>
+  <li>启动
+    <blockquote>
+      <p>执行每一个app下的admin.py文件</p>
+      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#源码，通过这个函数自动执行
+def autodiscover():
+ autodiscover_modules('admin', register_to=site)
+</code></pre></div>      </div>
+    </blockquote>
+  </li>
+  <li>注册
+    <blockquote>
+      <p>admin.site.register(modles.UserInfo,Useradmin)
+源码：<code class="highlighter-rouge">site = AdminSite()</code>,django中的注册所用到的site都是同一个对象。—具体参考python的单例模式
+```
+#源码，注册流程</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p>class AdminSite(object):
+    def <strong>init</strong>(self, name=’admin’):
+        self._registry = {}  # model_class class -&gt; admin_class instance
+—————————————-
+    def register(self, model_or_iterable, admin_class=None, **options):
+        if not admin_class:
+            admin_class = ModelAdmin #这是一个通用的配置类
+——————————————
+    self._registry[model] = admin_class(model, self)   # registry中的每一个对象有一个 self.model属性，可以直接调用models数据类</p>
+
+<hr />
+<p>class ModelStark(): # 配置类对象
+    def <strong>init</strong>(self,model):
+        self.model=model</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>总结：
+    通过源码可以得出，self.registry中存放的是：models中的数据类，以及配置类的子类(指的是models的自定义配置类)的对象
+    
+3. 设计URL
+&gt;储备知识：
+    拓展Url的方式：
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>url(r'^index/',([
+    url(r'^add/$',view.xxx),
+    url(r'^delete/$',view.xxx),
+    url(r'^change/$',view.xxx),
+    ],None,None) ``` &gt;可以顺利访问的url：http://index/add/ &gt;如何拿到app的名字和注册到admin的数据表名(modles的类名) ``` model._meta.app_label, model._meta.model_name ```
+</code></pre></div></div>
+
+<p>源码部分：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_urls</span><span class="p">(),</span> <span class="s">'admin'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">def</span> <span class="nf">get_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_admin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registry</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="c"># 注意这里的model，model_admin分别指的是什么</span>
+            <span class="n">urlpatterns</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="n">url</span><span class="p">(</span><span class="s">r'^</span><span class="si">%</span><span class="s">s/</span><span class="si">%</span><span class="s">s/'</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">model_name</span><span class="p">),</span> <span class="n">include</span><span class="p">(</span><span class="n">model_admin</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span> <span class="c"># 此处是二级路由匹配</span>
+                <span class="p">]</span>
+        <span class="k">return</span> <span class="n">urlpatterns</span>
+</code></pre></div></div>
+<p>说明：admin组件会为每个注册的model生成增删改查四个对应的url，上述源码只是生成了一级url。
+二级路由生成源码：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ModelAdmin</span><span class="p">(</span><span class="n">BaseModelAdmin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">url</span><span class="p">(</span><span class="s">r'^$'</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changelist_view</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">'</span><span class="si">%</span><span class="s">s_</span><span class="si">%</span><span class="s">s_changelist'</span> <span class="o">%</span> <span class="n">info</span><span class="p">),</span>
+            <span class="n">url</span><span class="p">(</span><span class="s">r'^add/$'</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_view</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">'</span><span class="si">%</span><span class="s">s_</span><span class="si">%</span><span class="s">s_add'</span> <span class="o">%</span> <span class="n">info</span><span class="p">),</span>
+            <span class="n">url</span><span class="p">(</span><span class="s">r'^(.+)/history/$'</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history_view</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">'</span><span class="si">%</span><span class="s">s_</span><span class="si">%</span><span class="s">s_history'</span> <span class="o">%</span> <span class="n">info</span><span class="p">),</span>
+            <span class="n">url</span><span class="p">(</span><span class="s">r'^(.+)/delete/$'</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delete_view</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">'</span><span class="si">%</span><span class="s">s_</span><span class="si">%</span><span class="s">s_delete'</span> <span class="o">%</span> <span class="n">info</span><span class="p">),</span>
+            <span class="n">url</span><span class="p">(</span><span class="s">r'^(.+)/change/$'</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">change_view</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">'</span><span class="si">%</span><span class="s">s_</span><span class="si">%</span><span class="s">s_change'</span> <span class="o">%</span> <span class="n">info</span><span class="p">),</span>
+            <span class="c"># For backwards compatibility (was the change url before 1.9)</span>
+            <span class="n">url</span><span class="p">(</span><span class="s">r'^(.+)/$'</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">RedirectView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span>
+                <span class="n">pattern_name</span><span class="o">=</span><span class="s">'</span><span class="si">%</span><span class="s">s:</span><span class="si">%</span><span class="s">s_</span><span class="si">%</span><span class="s">s_change'</span> <span class="o">%</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">admin_site</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span> <span class="o">+</span> <span class="n">info</span><span class="p">)</span>
+            <span class="p">))),</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">urlpatterns</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">urls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_urls</span><span class="p">()</span>
+
+</code></pre></div></div>
 
 
   </section>
