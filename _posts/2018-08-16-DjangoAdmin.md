@@ -90,8 +90,7 @@ class ModelStark(): # 配置类对象
     通过源码可以得出，self.registry中存放的是：models中的数据类，以及配置类的子类(指的是models的自定义配置类)的对象
     
 3. 设计URL
->储备知识：
-    拓展Url的方式：
+>储备知识：拓展Url的方式：
 
 ```
     url(r'^index/',([
