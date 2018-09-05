@@ -159,33 +159,33 @@
   <ol class="post-list">
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/08/DjangoCache/" title="访问 DjangoCache">DjangoCache</a></h2>
-      <p class="excerpt">缓存的简介  在动态网站中,用户所有的请求,服务器都会去数据库中进行相应的增,删,查,改,渲染模板,执行业务逻辑,最后生成用户看到的页面.  当一个网站的用户访问量很大的时候,每一次的的后台操作,都会消耗很多的服务端资源,所以必须使用缓存来减轻后端服务器的压力.  缓存是将一些常用的数据保存内存或者memcache中,在一定的时间内有人来访问这些数据时,则不再去执行数据库及渲染等操作,而是直接从内存或memcache的缓存中去取得数据,然后返回给用户.Django提供了6中缓存方式  开发...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2018/06/rabbitMQ/" title="访问 rabbitMQ">rabbitMQ</a></h2>
+      <p class="excerpt">rabbitMQ是什么？  是一个消息队列,持久化其他队列：queue(基于内存,一般用于测试);redis列表(可以做,但是不专业);zeromq(基于内存,速度快)可以做什么？  生产者消费者模型  数据通信: — rest api,http协议发生的json格式数据; — webservice,http协议发生的xml格式数据; — rpc(远程服务调用),基于socket并使用自己封装饿协议进行数据传输安装  服务端(linux) yum install rabbitmq-serv...&hellip;</p>
       <div class="post-list__meta">        
-        <time datetime="2018-08-16 00:00:00 +0800" class="post-list__meta--date date">
+        <time datetime="2018-06-12 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
-          2018-08-16</time> 
+          2018-06-12</time> 
         <div class = "tag-img-icon">
           <img src="/images/tag-icon.svg" width="20px" /> 
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">Django</span>
+            <span class="post-list__meta--tags-right">消息队列</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/08/DjangoCache/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2018/06/rabbitMQ/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/08/DjangoAdmin/" title="访问 Django-Admin">Django-Admin</a></h2>
-      <p class="excerpt">django-admin组件  创建超级用户python manage.py createsuperuseradmin组件的定制  注册modles：admin.site.register(modles.UserInfo)admin.ModelAdmin方法提供大量的可定制功能  list_display,定制显示的列class Useradmin(admin.ModelAdmin):    list_display = [nid,name,...,]admin.site.register...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2017/08/DjangoCache/" title="访问 DjangoCache">DjangoCache</a></h2>
+      <p class="excerpt">缓存的简介  在动态网站中,用户所有的请求,服务器都会去数据库中进行相应的增,删,查,改,渲染模板,执行业务逻辑,最后生成用户看到的页面.  当一个网站的用户访问量很大的时候,每一次的的后台操作,都会消耗很多的服务端资源,所以必须使用缓存来减轻后端服务器的压力.  缓存是将一些常用的数据保存内存或者memcache中,在一定的时间内有人来访问这些数据时,则不再去执行数据库及渲染等操作,而是直接从内存或memcache的缓存中去取得数据,然后返回给用户.Django提供了6中缓存方式  开发...&hellip;</p>
       <div class="post-list__meta">        
-        <time datetime="2018-08-16 00:00:00 +0800" class="post-list__meta--date date">
+        <time datetime="2017-08-16 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
-          2018-08-16</time> 
+          2017-08-16</time> 
         <div class = "tag-img-icon">
           <img src="/images/tag-icon.svg" width="20px" /> 
         </div>
@@ -194,7 +194,28 @@
             <span class="post-list__meta--tags-right">Django</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2018/08/DjangoAdmin/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2017/08/DjangoCache/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/08/DjangoAdmin/" title="访问 Django-Admin">Django-Admin</a></h2>
+      <p class="excerpt">django-admin组件  创建超级用户python manage.py createsuperuseradmin组件的定制  注册modles：admin.site.register(modles.UserInfo)admin.ModelAdmin方法提供大量的可定制功能  list_display,定制显示的列class Useradmin(admin.ModelAdmin):    list_display = [nid,name,...,]admin.site.register...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2017-08-16 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2017-08-16</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">Django</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2017/08/DjangoAdmin/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
