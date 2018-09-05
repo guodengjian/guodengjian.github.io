@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DjangoCache"
-date: 2018-08-16 
+date: 2017-08-16 
 description: "DjangoCache"
 tag: Django 
 --- 

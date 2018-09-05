@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Django-Admin"
-date: 2018-08-16 
+date: 2017-08-16 
 description: "Django-Admin"
 tag: Django 
 --- 
