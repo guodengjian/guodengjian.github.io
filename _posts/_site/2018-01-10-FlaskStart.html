@@ -1,0 +1,160 @@
+<h1 id="werkzeug第三方wsgi">werkzeug(第三方wsgi)</h1>
+
+<h2 id="基本原理实现">基本原理实现</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">werkzeug.wrappers</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span>
+
+<span class="nd">@Request.application</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="s">'hello world'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">run_simple</span>
+    <span class="n">run_simple</span><span class="p">(</span><span class="s">'localhost'</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="n">hello</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">load_dotenv</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="kn">import</span> <span class="n">run_simple</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c"># self就是app对象，这句话会执行app.__call__</span>
+        <span class="n">run_simple</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_got_first_request</span> <span class="o">=</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="c"># environ 是原始的请求数据</span>
+    <span class="c"># start_response，用于设置响应相关数据</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wsgi_app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">wsgi_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="c"># 1, 获取environ并对其进行再次封装</span>
+    <span class="c"># 2， 从environ中获取名称为session的cookie，解密，反序列化</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_context</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+    <span class="err">”“”</span>
+    <span class="k">def</span> <span class="nf">request_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RequestContext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">)</span>
+    <span class="err">“”“</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># 3 将上面两个东西放到Local中(包含request/session的ctx对象)</span>
+            <span class="c"># 3 ctx.push() 内部还有 app_ctx.push,维护了一个Local(包含了app/g的app_ctx) </span>
+            <span class="n">ctx</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+            <span class="c"># 4， 执行视图函数</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_dispatch_request</span><span class="p">()</span>
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">raise</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_ignore_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c"># 5， 从Local中获取session，加密，序列化，写入cookie</span>
+        <span class="c"># 6， 返回给用户，清空Local中对应的数据</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">auto_pop</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="上下文管理">上下文管理</h2>
+
+<h3 id="程序启动创建flask全局变量">程序启动:创建Flask全局变量</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 请求上下文相关的变量</span>
+<span class="n">_request_ctx_stack</span> <span class="o">=</span> <span class="n">LocalStack</span><span class="p">()</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">LocalProxy</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">_lookup_req_object</span><span class="p">,</span> <span class="s">'request'</span><span class="p">))</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">LocalProxy</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">_lookup_req_object</span><span class="p">,</span> <span class="s">'session'</span><span class="p">))</span>
+
+<span class="c"># app上下文相关的变量</span>
+<span class="n">_app_ctx_stack</span> <span class="o">=</span> <span class="n">LocalStack</span><span class="p">()</span>
+<span class="n">current_app</span> <span class="o">=</span> <span class="n">LocalProxy</span><span class="p">(</span><span class="n">_find_app</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">LocalProxy</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">_lookup_app_object</span><span class="p">,</span> <span class="s">'g'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="维护两个localstark对象">维护两个LocalStark对象</h4>
+
+<p><code class="highlighter-rouge">_request_ctx_stack = LocalStack()</code>,
+<code class="highlighter-rouge">_app_ctx_stack = LocalStack()</code></p>
+
+<h3 id="请求到来">请求到来</h3>
+
+<h4 id="对数据进行封装">对数据进行封装</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">wsgi_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_context</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span> <span class="c"># 封装(request,session)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">push</span><span class="p">:</span>
+    <span class="c"># app_ctx = AppContext(app)</span>
+    <span class="n">app_ctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">()</span><span class="err">`</span> <span class="c"># 封装(app,g)</span>
+    <span class="n">app_ctx</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="保存数据">保存数据</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># _request_ctx_stack 维护的 Local</span>
+<span class="c"># 数据结构</span>
+<span class="n">__storage__</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">ident</span><span class="p">:{</span>
+        <span class="n">stack</span><span class="p">:[</span><span class="n">ctx</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">session</span><span class="p">)]</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c"># _app_ctx_stack 维护的Local</span>
+<span class="c"># 数据结构</span>
+<span class="n">__storage__</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">ident</span><span class="p">:{</span>
+        <span class="n">stack</span><span class="p">:[</span><span class="n">app_ctx</span><span class="p">(</span><span class="n">app</span><span class="p">,</span><span class="n">g</span><span class="p">)]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="视图函数处理">视图函数处理</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 去请求上下文中取值 _request_ctx_stack</span>
+<span class="n">request</span><span class="o">.</span><span class="n">methods</span>
+<span class="n">session</span><span class="p">[</span><span class="s">'xxx'</span><span class="p">]</span>
+
+<span class="c"># 去app上下文中取值 _app_ctx_stack</span>
+<span class="n">current_app</span>
+<span class="n">g</span>
+</code></pre></div></div>
+
+<h3 id="结束清除数据">结束–清除数据</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_request_ctx_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="n">_app_ctx_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="关于g">关于g</h2>
+
+<ol>
+  <li>Flask中g的生命周期
+    <blockquote>
+      <p>请求到来，创建g，请求结束，销毁g</p>
+    </blockquote>
+  </li>
+  <li>g和session一样吗？
+    <blockquote>
+      <p>不一样，session会保存在cookie中，下次请求会携带</p>
+    </blockquote>
+  </li>
+  <li>g和全局变量一样吗?
+    <blockquote>
+      <p>不一样，全局变量在程序运行时就被创建，一直存在内存中，程序终止才会销毁</p>
+    </blockquote>
+  </li>
+  <li>多线程环境下g是否安全？
+    <blockquote>
+      <p>安全，__storage__是按照线程唯一标识存储的</p>
+    </blockquote>
+  </li>
+</ol>
