@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>路由和视图</title>
+  <meta name="description" content="路由和视图">
+  <meta name="author" content="leopardpan">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="路由和视图">
+  <meta name="twitter:description" content="路由和视图">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="路由和视图">
+  <meta property="og:description" content="路由和视图">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/01/%E8%B7%AF%E7%94%B1%E5%92%8C%E8%A7%86%E5%9B%BE/">
+  <link rel="alternate" type="application/rss+xml" title="guodengjian" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 guodengjian 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                guodengjian
+                            
+                        </h2>
+                        <p>
+                           
+                                Python / Web
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for guodengjian" class="blog-button">guodengjian</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">个人站</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎来到我的个人站~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">路由和视图</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2018-01-10 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-01-10</time>  
+         
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <h1 id="路由和视图">路由和视图</h1>
+
+<h2 id="前戏装饰器加括号与不加括号的区别">前戏–装饰器加括号与不加括号的区别</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="c"># 不加括号:将函数“index”当做参数传入wrapper</span>
+<span class="nd">@wrapper</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"Index"</span>
+
+<span class="c"># 加括号:执行流程</span>
+<span class="c"># 1. 先执行wrapper，获取返回值： v = wrapper()</span>
+<span class="c"># 2. @v</span>
+<span class="c"># 3. 将函数“index”当做参数传入v</span>
+<span class="nd">@wrapper</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"Index"</span>
+</code></pre></div></div>
+
+<h2 id="路由源码解析">路由源码解析</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 源码就是一个装饰器，直接返回一个函数decorator</span>
+<span class="k">def</span> <span class="nf">route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="c"># 获取别名，没有就置为None</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'endpoint'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="c"># 添加url和函数的对应关系,对参数进行处理</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_url_rule</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+
+<span class="k">def</span> <span class="nf">add_url_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">view_func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">provide_automatic_options</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="c"># 当endpoint是空的时候，将其置为函数名</span>
+    <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="n">_endpoint_from_view_func</span><span class="p">(</span><span class="n">view_func</span><span class="p">)</span>
+    <span class="c"># 获取endpoint</span>
+    <span class="n">options</span><span class="p">[</span><span class="s">'endpoint'</span><span class="p">]</span> <span class="o">=</span> <span class="n">endpoint</span>
+    <span class="c">#获取methods</span>
+    <span class="n">methods</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'methods'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="c"># 将url,methods封装到obj中。`url_rule_class = Rule`</span>
+    <span class="n">rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_rule_class</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="n">methods</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="c"># 添加函数和路由的对应关系，`self.url_map = Map()`</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">url_map</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<span class="c"># endpoint为空的时候，默认置为函数名</span>
+<span class="k">def</span> <span class="nf">_endpoint_from_view_func</span><span class="p">(</span><span class="n">view_func</span><span class="p">):</span>
+    <span class="c"># endpoint重复的时候会抛出错误</span>
+    <span class="k">assert</span> <span class="n">view_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'expected view func if endpoint '</span> \
+                                  <span class="s">'is not provided.'</span>
+    <span class="k">return</span> <span class="n">view_func</span><span class="o">.</span><span class="n">__name__</span>
+</code></pre></div></div>
+
+<h2 id="参数">参数</h2>
+
+<ul>
+  <li>rule, url规则</li>
+  <li>view_func, 视图函数名称</li>
+  <li>defaults = None, 默认值,当URL中无参数，函数需要参数时，使用defaults={‘k’:’v’}为函数提供参数</li>
+  <li>endpoint=None, 名称，用于反向生成URL，即:url_for(‘名称’)</li>
+  <li>methods=None,允许的请求方式</li>
+  <li>strict_slashes=None, 对URL最后的 / 符号是否严格要求</li>
+  <li>redirect_to=None, 重定向到指定地址</li>
+  <li>subdomain=None,子域名访问</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">views</span><span class="p">,</span> <span class="n">url_for</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">import_name</span><span class="o">=</span><span class="n">__name__</span><span class="p">)</span>
+<span class="c"># 子域名访问必须设置，注意添加主机host文件对应关系</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">'SERVER_NAME'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'xxx.com:5000'</span>
+
+<span class="c"># admin.xxx.com:5000 访问时触发</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">subdomain</span><span class="o">=</span><span class="s">"admin"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">static_index</span><span class="p">():</span>
+    <span class="s">"""Flask supports static subdomains
+    This is available at static.your-domain.tld"""</span>
+    <span class="k">return</span> <span class="s">"static.your-domain.tld"</span>
+
+<span class="c"># str.xxx.com:5000 任意字符串访问时触发</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/dynamic"</span><span class="p">,</span> <span class="n">subdomain</span><span class="o">=</span><span class="s">"&lt;username&gt;"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">username_index</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="s">"""Dynamic subdomains are also supported       Try going to user1.your-domain.tld/dynamic"""</span>                                                  <span class="k">return</span> <span class="n">username</span> <span class="o">+</span> <span class="s">".your-domain.tld"</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="cbv">CBV</h2>
+
+<blockquote>
+  <p>使用实例</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span><span class="n">views</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">UserView</span><span class="p">(</span><span class="n">views</span><span class="o">.</span><span class="n">MethodView</span><span class="p">):</span>
+    <span class="n">methodf</span> <span class="o">=</span> <span class="p">[</span><span class="s">'请求方法'</span><span class="p">]</span>
+    <span class="n">decorators</span> <span class="o">=</span> <span class="p">[</span><span class="s">'添加装饰器'']</span><span class="err">
+</span><span class="s">    def get(self, *args,**kwargs):</span><span class="err">
+</span><span class="s">        return '</span><span class="n">GET</span><span class="s">'</span><span class="err">
+
+</span><span class="s">    def post(self, *args,**kwargs):</span><span class="err">
+</span><span class="s">        return '</span><span class="n">POST</span><span class="s">'</span><span class="err">
+
+</span><span class="s">app.add_url_rule('</span><span class="o">/</span><span class="n">user</span><span class="s">',None,UserView.as_view('</span><span class="err">参数是</span><span class="n">endpoint</span><span class="s">'))</span><span class="err">
+
+</span><span class="s">if __name__ == '</span><span class="n">__main__</span><span class="s">':</span><span class="err">
+</span><span class="s">    app.run()</span><span class="err">
+
+</span></code></pre></div></div>
+
+<h2 id="cbv源码原理和django类似">CBV源码—原理和Django类似</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 项目执行，as_view返回函数view</span>
+<span class="k">def</span> <span class="nf">as_view</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">class_args</span><span class="p">,</span> <span class="o">**</span><span class="n">class_kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">view_class</span><span class="p">(</span><span class="o">*</span><span class="n">class_args</span><span class="p">,</span> <span class="o">**</span><span class="n">class_kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_request</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">view</span>
+
+<span class="c"># 请求进来，执行ispatch_request函数，进行分发</span>
+<span class="k">def</span> <span class="nf">dispatch_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">meth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="c"># If the request method is HEAD and we don't have a handler for it</span>
+    <span class="c"># retry with GET.</span>
+    <span class="k">if</span> <span class="n">meth</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'HEAD'</span><span class="p">:</span>
+        <span class="n">meth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">'get'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">meth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'Unimplemented method </span><span class="si">%</span><span class="s">r'</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span>
+    <span class="k">return</span> <span class="n">meth</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<h2 id="自定义正则匹配">自定义正则匹配</h2>
+
+<blockquote>
+  <p>使用示例</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">views</span><span class="p">,</span> <span class="n">url_for</span>
+<span class="kn">from</span> <span class="nn">werkzeug.routing</span> <span class="kn">import</span> <span class="n">BaseConverter</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">import_name</span><span class="o">=</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">RegexConverter</span><span class="p">(</span><span class="n">BaseConverter</span><span class="p">):</span>
+    <span class="s">"""
+    自定义URL匹配正则表达式
+    """</span>
+    <span class="c"># map 会自动传递</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RegexConverter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regex</span> <span class="o">=</span> <span class="n">regex</span>
+
+    <span class="k">def</span> <span class="nf">to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="s">"""
+        路由匹配时执行，匹配成功后传递给视图函数中参数的值
+        :param value: 
+        :return: 
+        """</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="s">"""
+        使用url_for反向生成URL时执行，传递的参数经过该方法处理，返回的值用于生成URL中的参数
+        :param value: 
+        :return: 
+        """</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">RegexConverter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_url</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span>
+
+<span class="c"># 添加到flask中</span>
+<span class="n">app</span><span class="o">.</span><span class="n">url_map</span><span class="o">.</span><span class="n">converters</span><span class="p">[</span><span class="s">'regex'</span><span class="p">]</span> <span class="o">=</span> <span class="n">RegexConverter</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">'/index/&lt;regex("</span><span class="err">\</span><span class="s">d+"):nid&gt;'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">nid</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s">'index'</span><span class="p">,</span> <span class="n">nid</span><span class="o">=</span><span class="s">'888'</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s">'Index'</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+
+  </section>
+</article>
+
+<section>
+
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏一个呗</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+              <div class="shang_payimg">    
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                <div class="pay_explain">扫码打赏，你说多少就多少</div>
+                <div class="shang_payselect">
+                  <div class="pay_item checked" data-id="alipay">
+                    <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                  </div>
+                  <div class="pay_item" data-id="weipay">
+                    <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                  </div>
+                </div>
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:140px;padding:10px;padding-left: 80px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:140px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin-right:10px;float:left;text-align:center;width:140px;height:140px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:0 auto;margin-top:40px;cursor:pointer;height:60px;width:500px;margin-left:110px;}
+              .shang_payselect .pay_item{display:inline-block;margin-right:140px;float:left;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2018/01/%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E7%9B%B8%E5%85%B3/" data-toggle="tooltip" data-placement="top" title="Flask请求和响应相关">上一篇：  <span>Flask请求和响应相关</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2018/01/%E8%B7%AF%E7%94%B1%E7%B3%BB%E7%BB%9F/" data-toggle="tooltip" data-placement="top" title="路由系统">下一篇：  <span>路由系统</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+            Copyright &copy; guodengjian 2018 Theme by <a href="http://guodengjian.github.io/">guodengjian</a> |
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=guodengjian&repo=guodengjian.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>
