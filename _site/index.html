@@ -516,8 +516,8 @@
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2017/10/RESTful%E8%A7%84%E8%8C%83/" title="访问 RESTful规范">RESTful规范</a></h2>
-      <p class="excerpt">如果一个架构符合REST原则，就称它为RESTful架构1. REST–Representational State Transfer–表现层状态转化  Resources Representational State Transfer  全称2. 一切皆资源  ‘表现层’指的是’资源’(Resources)的’表现层’‘资源’,就是网络上的一个实体，或者说是网络上的具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的实在。你可以用一个URI（统一资源定位符）指向它...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2017/10/%E9%A2%91%E7%8E%87%E7%BB%84%E4%BB%B6/" title="访问 频率组件">频率组件</a></h2>
+      <p class="excerpt">频率组件–源码def check_throttles(self, request):    """    Check if request should be throttled.    Raises an appropriate exception if the request is throttled.    """    for throttle in self.get_throttles():        if not throttle.allow_request(request...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-10-23 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -530,49 +530,49 @@
             <span class="post-list__meta--tags-right">restful</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2017/10/RESTful%E8%A7%84%E8%8C%83/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2017/10/%E9%A2%91%E7%8E%87%E7%BB%84%E4%BB%B6/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2017/08/DjangoCache/" title="访问 DjangoCache">DjangoCache</a></h2>
-      <p class="excerpt">缓存的简介  在动态网站中,用户所有的请求,服务器都会去数据库中进行相应的增,删,查,改,渲染模板,执行业务逻辑,最后生成用户看到的页面.  当一个网站的用户访问量很大的时候,每一次的的后台操作,都会消耗很多的服务端资源,所以必须使用缓存来减轻后端服务器的压力.  缓存是将一些常用的数据保存内存或者memcache中,在一定的时间内有人来访问这些数据时,则不再去执行数据库及渲染等操作,而是直接从内存或memcache的缓存中去取得数据,然后返回给用户.Django提供了6中缓存方式  开发...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2017/10/%E8%A7%A3%E6%9E%90%E5%99%A8/" title="访问 解析器">解析器</a></h2>
+      <p class="excerpt">解析器REST framework 包含许多内置的解析器类，允许接受各种媒体类型（media types）的请求。还支持自定义解析器，这使你可以灵活地设计 API 接受的媒体类型。如何确定使用哪个解析器视图的有效解析器集始终定义为类列表。当访问 request.data 时，REST framework 将检查传入请求的 Content-Type ，并确定使用哪个解析器来解析请求内容。  l老规矩，看源码```class APIView(View):    parser_classes =...&hellip;</p>
       <div class="post-list__meta">        
-        <time datetime="2017-08-16 00:00:00 +0800" class="post-list__meta--date date">
+        <time datetime="2017-10-23 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
-          2017-08-16</time> 
+          2017-10-23</time> 
         <div class = "tag-img-icon">
           <img src="/images/tag-icon.svg" width="20px" /> 
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">Django</span>
+            <span class="post-list__meta--tags-right">restful</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2017/08/DjangoCache/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2017/10/%E8%A7%A3%E6%9E%90%E5%99%A8/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2017/08/DjangoAdmin/" title="访问 Django-Admin">Django-Admin</a></h2>
-      <p class="excerpt">django-admin组件  创建超级用户python manage.py createsuperuseradmin组件的定制  注册modles：admin.site.register(modles.UserInfo)admin.ModelAdmin方法提供大量的可定制功能  list_display,定制显示的列class Useradmin(admin.ModelAdmin):    list_display = [nid,name,...,]admin.site.register...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2017/10/%E8%A7%86%E5%9B%BE%E7%BB%84%E4%BB%B6/" title="访问 视图组件">视图组件</a></h2>
+      <p class="excerpt">视图使用方法  第一种```from rest_framework.views import  APIViewclass AuthorView(APIView): def get():     pass def post():     passclass AuthorDetailView(APIView):	def get():		pass	def delete():		pass    def put():        pass&gt;解析：基于APIView，不同的url走不同的类，根...&hellip;</p>
       <div class="post-list__meta">        
-        <time datetime="2017-08-16 00:00:00 +0800" class="post-list__meta--date date">
+        <time datetime="2017-10-23 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
-          2017-08-16</time> 
+          2017-10-23</time> 
         <div class = "tag-img-icon">
           <img src="/images/tag-icon.svg" width="20px" /> 
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">Django</span>
+            <span class="post-list__meta--tags-right">restful</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2017/08/DjangoAdmin/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2017/10/%E8%A7%86%E5%9B%BE%E7%BB%84%E4%BB%B6/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
@@ -589,7 +589,9 @@
 	</script>
 	
     
-    <span class="pagination__page-number">1 / 1</span>
+    <span class="pagination__page-number">1 / 2</span>
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/2/#blog">更早 &rarr;</a>
     
 </nav>
 

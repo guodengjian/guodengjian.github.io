@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>RESTful规范</title>
-  <meta name="description" content="如果一个架构符合REST原则，就称它为RESTful架构">
+  <title>视图组件</title>
+  <meta name="description" content="视图使用方法  第一种```from rest_framework.views import  APIViewclass AuthorView(APIView): def get():     pass def post():     passclass AuthorDetailView(APIView):	de...">
   <meta name="author" content="leopardpan">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="RESTful规范">
-  <meta name="twitter:description" content="如果一个架构符合REST原则，就称它为RESTful架构">
+  <meta name="twitter:title" content="视图组件">
+  <meta name="twitter:description" content="视图使用方法  第一种```from rest_framework.views import  APIViewclass AuthorView(APIView): def get():     pass def post():     passclass AuthorDetailView(APIView):	de...">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="RESTful规范">
-  <meta property="og:description" content="如果一个架构符合REST原则，就称它为RESTful架构">
+  <meta property="og:title" content="视图组件">
+  <meta property="og:description" content="视图使用方法  第一种```from rest_framework.views import  APIViewclass AuthorView(APIView): def get():     pass def post():     passclass AuthorDetailView(APIView):	de...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2017/10/RESTful%E8%A7%84%E8%8C%83/">
+  <link rel="canonical" href="http://localhost:4000/2017/10/%E8%A7%86%E5%9B%BE%E7%BB%84%E4%BB%B6/">
   <link rel="alternate" type="application/rss+xml" title="guodengjian" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -156,7 +156,7 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">RESTful规范</h1>
+    <h1 class="post-title">视图组件</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="2017-10-23 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-10-23</time>  
@@ -167,49 +167,155 @@
   </header>
 
   <section class="post">
-    <h1 id="如果一个架构符合rest原则就称它为restful架构">如果一个架构符合REST原则，就称它为RESTful架构</h1>
+    <h1 id="视图使用方法">视图使用方法</h1>
+<ol>
+  <li>第一种
+```
+from rest_framework.views import  APIView
+class AuthorView(APIView):
+ def get():
+     pass
+ def post():
+     pass</li>
+</ol>
 
-<h2 id="1-restrepresentational-state-transfer表现层状态转化">1. REST–Representational State Transfer–表现层状态转化</h2>
-<blockquote>
-  <p>Resources Representational State Transfer  全称</p>
-</blockquote>
+<p>class AuthorDetailView(APIView):
+	def get():
+		pass
+	def delete():
+		pass
+    def put():
+        pass</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;解析：基于APIView，不同的url走不同的类，根据请求方法的不同，执行相应的函数
 
-<h2 id="2-一切皆资源">2. 一切皆资源</h2>
-<blockquote>
-  <p>‘表现层’指的是’资源’(Resources)的’表现层’
-<strong>‘资源’,就是网络上的一个实体，或者说是网络上的具体信息</strong>。它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的实在。你可以用一个URI（统一资源定位符）指向它，每种资源对应一个特定的URI。要获取这个资源，访问它的URI就可以，因此URI就成了每一个资源的地址或独一无二的识别符。
-所谓”上网”，就是与互联网上一系列的”资源”互动，调用它的URI。</p>
-</blockquote>
+2. 第二种
+</code></pre></div></div>
+<p>from rest_framework.mixins import CreateModelMixin,ListModelMixin,DestroyModelMixin,RetrieveModelMixin,UpdateModelMixin
+from rest_framework.generics import GenericAPIView</p>
 
-<h2 id="3-表现层representation">3. 表现层(Representation)</h2>
-<p>‘资源’是一种信息实体，可以有多种外在表现形式。<strong>我们把’资源’具体呈现出来的形式,叫做它的’表现层’(Representation)</strong>
-URI只代表资源的实体，不代表它的形式。严格地说，有些网址最后的”.html”后缀名是不必要的，因为这个后缀名表示格式，属于”表现层”范畴，而URI应该只代表”资源”的位置。它的具体表现形式，应该在HTTP请求的头信息中用Accept和Content-Type字段指定，这两个字段才是对”表现层”的描述。</p>
+<p>class AuthorView(CreateModelMixin,ListModelMixin,GenericAPIView):
+    queryset=Author.objects.all
+	serializer_class=AuthorSerializers</p>
 
-<h2 id="4-状态转化state-transfer">4. 状态转化(State Transfer)</h2>
-<p>访问一个网站，就代表了客户端和服务器的一个互动过程。在这个过程中，势必涉及到数据和状态的变化。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get(self,request):
+	return self.list(request)
+def post(self,request):
+    return self.create(request)
+</code></pre></div></div>
 
-<p>互联网通信协议HTTP协议，是一个无状态协议。这意味着，所有的状态都保存在服务端。<strong>因此，如果客户端想要操作服务器，必须通过某种手段，让服务端发生”状态转化”。而这种转化是建立在表现层之上的，所以就是”表现层状态转化”。</strong></p>
+<p>class AuthorDetailView(DestroyModelMixin,UpdateModelMixin,RetrieveModelMixin,GenericAPIView):
+	queryset = Author.objects.all
+	serializer_class = AuthorSerializers</p>
 
-<p>客户端用到的手段，只能是HTTP协议。具体来说，就是HTTP协议里面，四个表示操作方式的动词：GET、POST、PUT、DELETE。它们分别对应四种基本操作：<strong>GET用来获取资源，POST用来新建资源(也可以用于更新资源)，PUT用来更新资源，DELETE用来删除资源。</strong>*</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get(self,request, *args, **kwargs):
+    return self.retrieve(request, *args, **kwargs)
 
-<h2 id="5-总结restful架构">5. 总结RESTful架构</h2>
-<ul>
-  <li>每一个URL代表一种资源；</li>
-  <li>客户端和服务器之间，传递这种资源的某种表现层；</li>
-  <li>客户端通过四个HTTP动词，对服务端资源进行操作，实现”表现层状态转化”</li>
-</ul>
+def put(self,request, *args, **kwargs):
+   return self.update(request, *args, **kwargs)
 
-<h2 id="6-误区">6. 误区</h2>
-<ul>
-  <li><strong>URL包含动词。</strong> ‘资源’表示一种实体，所有应该使用名词，动词应该放在HTTP协议中
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>错误示范： POST /accounts/1/transfer/500/to/2
-正确示范：
-　  POST /transaction HTTP/1.1
-　　Host: 127.0.0.1
-　　from=1&amp;to=2&amp;amount=500.00
-</code></pre></div>    </div>
-  </li>
-</ul>
+def delete(self,request, *args, **kwargs):
+	return self.destroy(request, *args, **kwargs) ``` 解析:将**请求对应的动作封装到`CreateModelMixin,ListModelMixin,DestroyModelMixin,RetrieveModelMixin,UpdateModelMixin`中，用户发起请求后，不同的请求动作分发到不同的类中对应的方法。** 源码省略。 解析：`GenericAPIView`类封装了`queryset`，`serializer_class`两个属性，通过上述继承关系，用户在定义这两个属性之后，几个`mixins`子类都可以在`GenericAPIView`中拿到对应的值。 源码: ``` class GenericAPIView(views.APIView):
+queryset = None
+serializer_class = None ```
+</code></pre></div></div>
+
+<ol>
+  <li>第三种
+```
+class AuthorView(ListCreateAPIView):
+ queryset=Author.objects.all
+ serializer_class=AuthorSerializers</li>
+</ol>
+
+<p>class AuthorDetailView(RetrieveUpdateDestroyAPIView):
+	queryset = Author.objects.all
+	serializer_class = AuthorSerializers</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>解析：对第二种的进一步封装，没啥说的，直接看源码
+源码:
+</code></pre></div></div>
+<p>class ListCreateAPIView(mixins.ListModelMixin,
+                        mixins.CreateModelMixin,
+                        GenericAPIView):
+    “””
+    Concrete view for listing a queryset or creating a model instance.
+    “””
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def post(self, request, *args, **kwargs):
+    return self.create(request, *args, **kwargs)
+</code></pre></div></div>
+
+<p>class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
+                                   mixins.UpdateModelMixin,
+                                   mixins.DestroyModelMixin,
+                                   GenericAPIView):
+    “””
+    Concrete view for retrieving, updating or deleting a model instance.
+    “””
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def put(self, request, *args, **kwargs):
+    return self.update(request, *args, **kwargs)
+
+def patch(self, request, *args, **kwargs):
+    return self.partial_update(request, *args, **kwargs)
+
+def delete(self, request, *args, **kwargs):
+    return self.destroy(request, *args, **kwargs) ```
+</code></pre></div></div>
+
+<ol>
+  <li>第四种
+```
+from rest_framework.viewsets import ModelViewSet</li>
+</ol>
+
+<p>class AuthorModelView(ModelViewSet):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>queryset=Author.objects.all()
+serializer_class=AuthorSerializers
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**最厉害的一种，我们先看看源码**
+
+源码：
+</code></pre></div></div>
+<p>class ModelViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   GenericViewSet):
+    “””
+    A viewset that provides default <code class="highlighter-rouge">create()</code>, <code class="highlighter-rouge">retrieve()</code>, <code class="highlighter-rouge">update()</code>,
+    <code class="highlighter-rouge">partial_update()</code>, <code class="highlighter-rouge">destroy()</code> and <code class="highlighter-rouge">list()</code> actions.
+    “””
+    pass</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**好像和第三种没啥区别啊，只是全部继承了，别着急，我们看看URL**
+</code></pre></div></div>
+<p>url(r’^authors/$’, views.AuthorModelView.as_view({“get”:”list”,”post”:”create”})),
+url(r’^authors/(?P<pk>\d+)/$', views.AuthorModelView.as_view({"get":"retrieve","put":"update","delete":"destroy"})),</pk></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**URL还能带参数，好像很厉害，如何实现分发呢？再看源码**
+&gt;viewsets.py(下面源码的出处，免得搞混了)
+</code></pre></div></div>
+<p>@classonlymethod # 等同于classmethod
+def as_view(cls, actions=None, <strong>initkwargs):   # actions接受URL中的参数
+    def view(request, *args, **kwargs):  # 用户发起请求，URL匹配成功后执行
+        self = cls(</strong>initkwargs)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    self.action_map = actions
+
+    for method, action in actions.items():  # 遍历，取键值对赋值
+        handler = getattr(self, action)     # 获取变量action对应的方法，赋值给handler。如:handler = self.list
+        setattr(self, method, handler)      # 设置self的属性。如self.get = self.list
+
+    return self.dispatch(request, *args, **kwargs) # 分发
+
+return view ``` **结论：URL中的键值对参数，经过处理之后，用户成功匹配不同的URL之后，根据不同的请求方法，会执行请求方法对应的封装好的其他方法。**
+</code></pre></div></div>
+
 
 
   </section>
@@ -279,13 +385,13 @@ URI只代表资源的实体，不代表它的形式。严格地说，有些网�
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2017/10/DjangoCBV%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" data-toggle="tooltip" data-placement="top" title="djangoCBV源码分析">上一篇：  <span>djangoCBV源码分析</span>
+            <a href="/2017/10/%E6%B8%B2%E6%9F%93%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="渲染器">上一篇：  <span>渲染器</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2017/10/Router/" data-toggle="tooltip" data-placement="top" title="Router">下一篇：  <span>Router</span>
+            <a href="/2017/10/%E8%A7%A3%E6%9E%90%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="解析器">下一篇：  <span>解析器</span>
             </a>
         </li>
         
