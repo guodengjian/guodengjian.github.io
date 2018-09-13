@@ -370,7 +370,7 @@
     
     <li>
       <h2 class="post-list__post-title post-title"><a href="/2018/01/%E7%89%B9%E6%AE%8A%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8%E4%BB%A5%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6/" title="访问 特殊的装饰器和中间件">特殊的装饰器和中间件</a></h2>
-      <p class="excerpt">特殊的装饰器1.before_request  拦截请求，xxx没有返回值，则继续执行后续代码。有返回值则直接返回，不再执行后续代码。先定义的先执行@app.before_requestdef xxx():    pass2.app.template_global()  定义之后，在模板中可以直接使用``调用@app.template_global()def sb(a1, a2):    return a1 + a23.app.template_filter()  定义之后，在模板中可以...&hellip;</p>
+      <p class="excerpt">特殊的装饰器1.before_request  拦截请求，xxx没有返回值，则继续执行后续代码。有返回值则直接返回，不再执行后续代码。先定义的先执行@app.before_requestdef xxx():    pass2.app.template_global()  定义之后，在模板中可以直接使用" sb() "调用@app.template_global()def sb(a1, a2):    return a1 + a23.app.template_filter()  定义之后，...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2018-01-10 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -537,8 +537,29 @@
     </li>
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/10/%E8%AE%A4%E8%AF%81%E7%BB%84%E4%BB%B6/" title="访问 认证组件">认证组件</a></h2>
+      <p class="excerpt">认证组件流程一点一点看看源码，首先是组件在哪里？def initial(self, request, *args, **kwargs):    # Ensure that the incoming request is permitted    self.perform_authentication(request) # 认证组件    self.check_permissions(request) # 权限组件    self.check_throttles(request) # 频率组...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2017-10-23 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2017-10-23</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">restful</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2017/10/%E8%AE%A4%E8%AF%81%E7%BB%84%E4%BB%B6/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2017/10/%E8%A7%A3%E6%9E%90%E5%99%A8/" title="访问 解析器">解析器</a></h2>
-      <p class="excerpt">解析器REST framework 包含许多内置的解析器类，允许接受各种媒体类型（media types）的请求。还支持自定义解析器，这使你可以灵活地设计 API 接受的媒体类型。如何确定使用哪个解析器视图的有效解析器集始终定义为类列表。当访问 request.data 时，REST framework 将检查传入请求的 Content-Type ，并确定使用哪个解析器来解析请求内容。  l老规矩，看源码```class APIView(View):    parser_classes =...&hellip;</p>
+      <p class="excerpt">解析器REST framework 包含许多内置的解析器类，允许接受各种媒体类型（media types）的请求。还支持自定义解析器，这使你可以灵活地设计 API 接受的媒体类型。如何确定使用哪个解析器视图的有效解析器集始终定义为类列表。当访问 request.data 时，REST framework 将检查传入请求的 Content-Type ，并确定使用哪个解析器来解析请求内容。老规矩，看源码class APIView(View):    parser_classes = api_s...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-10-23 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -552,27 +573,6 @@
           </div>
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2017/10/%E8%A7%A3%E6%9E%90%E5%99%A8/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2017/10/%E8%A7%86%E5%9B%BE%E7%BB%84%E4%BB%B6/" title="访问 视图组件">视图组件</a></h2>
-      <p class="excerpt">视图使用方法  第一种```from rest_framework.views import  APIViewclass AuthorView(APIView): def get():     pass def post():     passclass AuthorDetailView(APIView):	def get():		pass	def delete():		pass    def put():        pass&gt;解析：基于APIView，不同的url走不同的类，根...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2017-10-23 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2017-10-23</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">restful</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2017/10/%E8%A7%86%E5%9B%BE%E7%BB%84%E4%BB%B6/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />

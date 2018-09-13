@@ -171,14 +171,16 @@
 
 <h3 id="用法">用法</h3>
 <p>下面是一个使用<code class="highlighter-rouge">SimpleRouter</code>的简单URL配置示例。</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from rest_framework import routers
 
-    router = routers.SimpleRouter()
-    router.register(r'users', UserViewSet)
-    router.register(r'accounts', AccountViewSet)
-    url("^",include(router.urls))	
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">routers</span>
+
+    <span class="n">router</span> <span class="o">=</span> <span class="n">routers</span><span class="o">.</span><span class="n">SimpleRouter</span><span class="p">()</span>
+    <span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s">r'users'</span><span class="p">,</span> <span class="n">UserViewSet</span><span class="p">)</span>
+    <span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s">r'accounts'</span><span class="p">,</span> <span class="n">AccountViewSet</span><span class="p">)</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">"^"</span><span class="p">,</span><span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">))</span>	
 
 </code></pre></div></div>
+
 <p><code class="highlighter-rouge">register()</code>方法有两个必须参数:</p>
 <ul>
   <li><code class="highlighter-rouge">prefix</code> 设置这组路由的前缀</li>
@@ -189,20 +191,23 @@
 <ul>
   <li><code class="highlighter-rouge">base_name</code> 用于创建的URL名称的基础。如果未设置，将根据视图集的<code class="highlighter-rouge">queryset</code>属性自动生成。如果视图集不包含<code class="highlighter-rouge">queryset</code>属性，则在注册视图集时必须设置<code class="highlighter-rouge">base_name</code>。
     <blockquote>
-      <p>以上内容的源码依据:
-```
-class BaseRouter(object):
-  def <strong>init</strong>(self):
-      self.registry = []</p>
+      <p>以上内容的源码依据:</p>
     </blockquote>
-
-    <p>def register(self, prefix, viewset, base_name=None):
-      if base_name is None:
-          base_name = self.get_default_base_name(viewset)
-      self.registry.append((prefix, viewset, base_name))
-```
-上面的例子会生成以下URL模式：</p>
   </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BaseRouter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registry</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">viewset</span><span class="p">,</span> <span class="n">base_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">base_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">base_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_base_name</span><span class="p">(</span><span class="n">viewset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">prefix</span><span class="p">,</span> <span class="n">viewset</span><span class="p">,</span> <span class="n">base_name</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>上面的例子会生成以下URL模式：</p>
+<ul>
   <li>URL pattern: <code class="highlighter-rouge">^users/$</code> Name:  <code class="highlighter-rouge">'user-list'</code></li>
   <li>URL pattern: <code class="highlighter-rouge">^users/{pk}/$</code> Name:  <code class="highlighter-rouge">'user-detail'</code></li>
   <li>URL pattern: <code class="highlighter-rouge">^accounts/$</code> Name:  <code class="highlighter-rouge">'account-list'</code></li>
@@ -217,30 +222,34 @@ class BaseRouter(object):
 <p>路由实例上的<code class="highlighter-rouge">.urls</code>属性是一个标准的URL patterns。关于如何包含这些URL，有许多不同的样式。</p>
 
 <p>例如：</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>router = routers.SimpleRouter()
-router.register(r'users', UserViewSet)
-router.register(r'accounts', AccountViewSet)
 
-urlpatterns = [
-    url(r'^forgot-password/$', ForgotPasswordFormView.as_view()),
-]
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">router</span> <span class="o">=</span> <span class="n">routers</span><span class="o">.</span><span class="n">SimpleRouter</span><span class="p">()</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s">r'users'</span><span class="p">,</span> <span class="n">UserViewSet</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s">r'accounts'</span><span class="p">,</span> <span class="n">AccountViewSet</span><span class="p">)</span>
 
-urlpatterns += router.urls
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^forgot-password/$'</span><span class="p">,</span> <span class="n">ForgotPasswordFormView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span>
+<span class="p">]</span>
+
+<span class="n">urlpatterns</span> <span class="o">+=</span> <span class="n">router</span><span class="o">.</span><span class="n">urls</span>
 
 </code></pre></div></div>
+
 <p>还可以使用Django的<code class="highlighter-rouge">include</code>函数</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>urlpatterns = [
-    url(r'^forgot-password/$', ForgotPasswordFormView.as_view()),
-    url(r'^', include(router.urls)),
-]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^forgot-password/$'</span><span class="p">,</span> <span class="n">ForgotPasswordFormView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+<span class="p">]</span>
 
 </code></pre></div></div>
+
 <p>还能设置namespace</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>urlpatterns = [
-    url(r'^forgot-password/$', ForgotPasswordFormView.as_view()),
-    url(r'^api/', include(router.urls, namespace='api')),
-]
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^forgot-password/$'</span><span class="p">,</span> <span class="n">ForgotPasswordFormView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^api/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s">'api'</span><span class="p">)),</span>
+<span class="p">]</span>
 </code></pre></div></div>
 
 

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>认证组件</title>
+  <meta name="description" content="认证组件流程一点一点看看源码，首先是组件在哪里？">
+  <meta name="author" content="leopardpan">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="认证组件">
+  <meta name="twitter:description" content="认证组件流程一点一点看看源码，首先是组件在哪里？">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="认证组件">
+  <meta property="og:description" content="认证组件流程一点一点看看源码，首先是组件在哪里？">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2017/10/%E8%AE%A4%E8%AF%81%E7%BB%84%E4%BB%B6/">
+  <link rel="alternate" type="application/rss+xml" title="guodengjian" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 guodengjian 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                guodengjian
+                            
+                        </h2>
+                        <p>
+                           
+                                Python / Web
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for guodengjian" class="blog-button">guodengjian</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">个人站</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎来到我的个人站~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">认证组件</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2017-10-23 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-10-23</time>  
+         
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <h2 id="认证组件流程">认证组件流程</h2>
+<p><img src="http://note.youdao.com/yws/res/1015/683E41BF850949B78D8DAC07BCFB4C8D" alt="image" />
+一点一点看看源码，首先是组件在哪里？</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">initial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c"># Ensure that the incoming request is permitted</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">perform_authentication</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="c"># 认证组件</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">check_permissions</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="c"># 权限组件</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">check_throttles</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="c"># 频率组件</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>来了，看看组件里面是啥？</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def perform_authentication(self, request):
+    """
+    Perform authentication on the incoming request.
+
+    Note that if you override this and simply 'pass', then authentication
+    will instead be performed lazily, the first time either
+    `request.user` or `request.auth` is accessed.
+    """
+    request.user
+</code></pre></div></div>
+
+<blockquote>
+  <p>嗯？这是啥？想想，这里<code class="highlighter-rouge">request.user</code>是不是一个静态方法！如果不是，那将毫无意义。一起来看看。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="s">"""
+    Returns the user associated with the current request, as authenticated
+    by the authentication classes provided to the request.
+    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">'_user'</span><span class="p">):</span>  
+        <span class="k">with</span> <span class="n">wrap_attributeerrors</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_authenticate</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span>
+</code></pre></div></div>
+<blockquote>
+  <p>事实上它就是一个静态方法。顺便看看<code class="highlighter-rouge">request</code>的来历！！</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">initialize_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="s">"""
+    Returns the initial request object.
+    """</span>
+    <span class="n">parser_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parser_context</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Request</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="n">parsers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_parsers</span><span class="p">(),</span>
+        <span class="n">authenticators</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_authenticators</span><span class="p">(),</span>
+        <span class="n">negotiator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_content_negotiator</span><span class="p">(),</span>
+        <span class="n">parser_context</span><span class="o">=</span><span class="n">parser_context</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>可以看出来，<code class="highlighter-rouge">request</code>已经被封装过了。不要在傻乎乎的以为<code class="highlighter-rouge">request</code>还是以前的那位了，它变心了。
+好了，看看静态方法<code class="highlighter-rouge">user</code>都干了什么。注意，<code class="highlighter-rouge">if not hasattr(self, '_user')</code>这句话是一定成立的。不信你可以验证一下哟。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">_authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">authenticator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">user_auth_tuple</span> <span class="o">=</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">APIException</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_not_authenticated</span><span class="p">()</span>
+            <span class="k">raise</span>
+
+        <span class="k">if</span> <span class="n">user_auth_tuple</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_authenticator</span> <span class="o">=</span> <span class="n">authenticator</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="n">user_auth_tuple</span>
+            <span class="k">return</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_not_authenticated</span><span class="p">()</span>
+</code></pre></div></div>
+<blockquote>
+  <p>好了，认证的规则已经呈现在你面前了。那么，<code class="highlighter-rouge">self.authenticators</code>循环的这是个啥玩意呢？</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Request</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">parsers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">authenticators</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">negotiator</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parser_context</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span> <span class="o">=</span> <span class="n">authenticators</span> <span class="ow">or</span> <span class="p">()</span>
+</code></pre></div></div>
+<blockquote>
+  <p>原来初始化的时候已经赋值了，还记得上面的<code class="highlighter-rouge">request</code>的来历吗？<code class="highlighter-rouge">authenticators=self.get_authenticators()</code>是不是已经传值了。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_authenticators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">auth</span><span class="p">()</span> <span class="k">for</span> <span class="n">auth</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication_classes</span><span class="p">]</span>
+</code></pre></div></div>
+<blockquote>
+  <p>看看最上面的<code class="highlighter-rouge">restframe work</code>所有组件，是不是看到了熟悉的东西。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">authentication_classes</span> <span class="o">=</span> <span class="n">api_settings</span><span class="o">.</span><span class="n">DEFAULT_AUTHENTICATION_CLASSES</span>
+
+<span class="s">'DEFAULT_AUTHENTICATION_CLASSES'</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s">'rest_framework.authentication.SessionAuthentication'</span><span class="p">,</span>
+        <span class="s">'rest_framework.authentication.BasicAuthentication'</span>
+    <span class="p">),</span>
+</code></pre></div></div>
+<p>以上，就是认证组件的流程了。</p>
+
+<h2 id="自定义认证组件">自定义认证组件</h2>
+<blockquote>
+  <p>看了上面的流程，你应该知道了如何自定义自己的认证组件了吧！没错，就是自定义<code class="highlighter-rouge">authentication_classes</code>。
+示例:</p>
+</blockquote>
+
+<pre><code class="language-pythhon">class TokenAuth(BaseAuthentication):
+    def authenticate(self,request)
+        如果认证通过：
+            return 
+        认证失败： 
+            raise AuthenticationFailed("认证失败！")
+</code></pre>
+<p>注意：</p>
+<ol>
+  <li><code class="highlighter-rouge">def authenticate(self,request)</code>这里是固定写法，必须这样写。什么，你问我为什么？翻回去看看<code class="highlighter-rouge">def _authenticate(self):</code>这个函数的<code class="highlighter-rouge">for</code>循环部分。</li>
+  <li>认证失败必须抛出错误。嗯，还是``def _authenticate(self)`它规定的，不要问我为什么。</li>
+  <li>认证通过的<code class="highlighter-rouge">return</code>，应该返回什么。如果只有认证规则类(<code class="highlighter-rouge">class TokenAuth(BaseAuthentication)</code>,就是这种)，那么返回元组或者空都是可以的。
+如果有多个认证规则类，那么只有最后一个才能返回元组，其他的只能返回None。</li>
+</ol>
+
+<h2 id="设置全局生效的认证规则">设置全局生效的认证规则</h2>
+<blockquote>
+  <p>settings.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REST_FRAMEWORK</span><span class="o">=</span><span class="p">{</span>
+    <span class="s">"DEFAULT_AUTHENTICATION_CLASSES"</span><span class="p">:[</span>
+        <span class="s">"app01.utils.auth.TokenAuth"</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>不要问我为什么，看看源码你就知道了。</p>
+</blockquote>
+
+
+  </section>
+</article>
+
+<section>
+
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏一个呗</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+              <div class="shang_payimg">    
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                <div class="pay_explain">扫码打赏，你说多少就多少</div>
+                <div class="shang_payselect">
+                  <div class="pay_item checked" data-id="alipay">
+                    <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                  </div>
+                  <div class="pay_item" data-id="weipay">
+                    <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                  </div>
+                </div>
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:140px;padding:10px;padding-left: 80px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:140px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin-right:10px;float:left;text-align:center;width:140px;height:140px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:0 auto;margin-top:40px;cursor:pointer;height:60px;width:500px;margin-left:110px;}
+              .shang_payselect .pay_item{display:inline-block;margin-right:140px;float:left;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2017/10/%E8%A7%A3%E6%9E%90%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="解析器">上一篇：  <span>解析器</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2017/10/%E9%A2%91%E7%8E%87%E7%BB%84%E4%BB%B6/" data-toggle="tooltip" data-placement="top" title="频率组件">下一篇：  <span>频率组件</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+            Copyright &copy; guodengjian 2018 Theme by <a href="http://guodengjian.github.io/">guodengjian</a> |
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=guodengjian&repo=guodengjian.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

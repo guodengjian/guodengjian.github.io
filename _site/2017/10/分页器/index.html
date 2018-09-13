@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>分页器</title>
-  <meta name="description" content="设置分页样式分页样式可以使用DEFAULT_PAGINATION_CLASS 和 PAGE_SIZE 全局设置。例如，要使用内置的 limit/offset 分页，你可以这样做：```REST_FRAMEWORK = {    ‘DEFAULT_PAGINATION_CLASS’: ‘rest_framework...">
+  <meta name="description" content="设置分页样式分页样式可以使用DEFAULT_PAGINATION_CLASS 和 PAGE_SIZE 全局设置。例如，要使用内置的 limit/offset 分页，你可以这样做：">
   <meta name="author" content="leopardpan">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="分页器">
-  <meta name="twitter:description" content="设置分页样式分页样式可以使用DEFAULT_PAGINATION_CLASS 和 PAGE_SIZE 全局设置。例如，要使用内置的 limit/offset 分页，你可以这样做：```REST_FRAMEWORK = {    ‘DEFAULT_PAGINATION_CLASS’: ‘rest_framework...">
+  <meta name="twitter:description" content="设置分页样式分页样式可以使用DEFAULT_PAGINATION_CLASS 和 PAGE_SIZE 全局设置。例如，要使用内置的 limit/offset 分页，你可以这样做：">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="分页器">
-  <meta property="og:description" content="设置分页样式分页样式可以使用DEFAULT_PAGINATION_CLASS 和 PAGE_SIZE 全局设置。例如，要使用内置的 limit/offset 分页，你可以这样做：```REST_FRAMEWORK = {    ‘DEFAULT_PAGINATION_CLASS’: ‘rest_framework...">
+  <meta property="og:description" content="设置分页样式分页样式可以使用DEFAULT_PAGINATION_CLASS 和 PAGE_SIZE 全局设置。例如，要使用内置的 limit/offset 分页，你可以这样做：">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -169,12 +169,14 @@
   <section class="post">
     <h3 id="设置分页样式">设置分页样式</h3>
 <p>分页样式可以使用<code class="highlighter-rouge">DEFAULT_PAGINATION_CLASS</code> 和 <code class="highlighter-rouge">PAGE_SIZE</code> 全局设置。例如，要使用内置的 limit/offset 分页，你可以这样做：</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100
-}
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'DEFAULT_PAGINATION_CLASS'</span><span class="p">:</span> <span class="s">'rest_framework.pagination.LimitOffsetPagination'</span><span class="p">,</span>
+    <span class="s">'PAGE_SIZE'</span><span class="p">:</span> <span class="mi">100</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
+
 <p>请注意，你需要设置分页类和应使用的页面大小。默认情况下，<code class="highlighter-rouge">DEFAULT_PAGINATION_CLASS</code>
 和<code class="highlighter-rouge">PAGE_SIZE</code>都是<code class="highlighter-rouge">None</code>。</p>
 
@@ -182,37 +184,42 @@
 
 <h3 id="修改分页样式">修改分页样式</h3>
 <p>如果要修改分页样式的特定方面，则需要继承其中一个分页类，并设置要更改的属性</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 100
-    page_size_query_param = 'page_size' # 临时分页关键字
-    max_page_size = 1000  # 允许临时分页最大数
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">StandardResultsSetPagination</span><span class="p">(</span><span class="n">PageNumberPagination</span><span class="p">):</span>
+    <span class="n">page_size</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">page_size_query_param</span> <span class="o">=</span> <span class="s">'page_size'</span> <span class="c"># 临时分页关键字</span>
+    <span class="n">max_page_size</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c"># 允许临时分页最大数</span>
 </code></pre></div></div>
 <p>然后，使用<code class="highlighter-rouge">pagination_class</code>属性将新样式应用于视图：</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class BillingRecordsView(generics.ListAPIView):
-    queryset = Billing.objects.all()
-    serializer_class = BillingRecordsSerializer
-    pagination_class = StandardResultsSetPagination
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BillingRecordsView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Billing</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">BillingRecordsSerializer</span>
+    <span class="n">pagination_class</span> <span class="o">=</span> <span class="n">StandardResultsSetPagination</span>
 </code></pre></div></div>
 <p>或者使用<code class="highlighter-rouge">DEFAULT_PAGINATION_CLASS</code>全局应用样式</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination'
-}
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'DEFAULT_PAGINATION_CLASS'</span><span class="p">:</span> <span class="s">'apps.core.pagination.StandardResultsSetPagination'</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <h3 id="应用">应用</h3>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyPageNumberPagination(PageNumberPagination):
-    page_size = 2
-    page_size_query_param="size"
-    max_page_size=4
-</code></pre></div></div>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class BookView(APIView):
 
-    def get(self, request):
-        book_list = Book.objects.all()
-        pagination=MyPageNumberPagination()
-        page_queryset=pagination.paginate_queryset(book_list,request)
-        bs = BookSerializers(page_queryset, many=True)
-        return Response(bs.data)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyPageNumberPagination</span><span class="p">(</span><span class="n">PageNumberPagination</span><span class="p">):</span>
+    <span class="n">page_size</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">page_size_query_param</span><span class="o">=</span><span class="s">"size"</span>
+    <span class="n">max_page_size</span><span class="o">=</span><span class="mi">4</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BookView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">book_list</span> <span class="o">=</span> <span class="n">Book</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+        <span class="n">pagination</span><span class="o">=</span><span class="n">MyPageNumberPagination</span><span class="p">()</span>
+        <span class="n">page_queryset</span><span class="o">=</span><span class="n">pagination</span><span class="o">.</span><span class="n">paginate_queryset</span><span class="p">(</span><span class="n">book_list</span><span class="p">,</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">bs</span> <span class="o">=</span> <span class="n">BookSerializers</span><span class="p">(</span><span class="n">page_queryset</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">bs</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div></div>
 
 

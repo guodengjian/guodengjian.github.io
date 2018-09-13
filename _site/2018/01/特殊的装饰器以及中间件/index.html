@@ -181,7 +181,7 @@
 
 <p>2.app.template_global()</p>
 <blockquote>
-  <p>定义之后，在模板中可以直接使用``调用</p>
+  <p>定义之后，在模板中可以直接使用<code class="highlighter-rouge">" sb() "</code>调用</p>
 </blockquote>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@app.template_global</span><span class="p">()</span>
@@ -192,7 +192,7 @@
 
 <p>3.app.template_filter()</p>
 <blockquote>
-  <p>定义之后，在模板中可以直接使用``调用。</p>
+  <p>定义之后，在模板中可以直接使用<code class="highlighter-rouge">"p1 | db(p2, p3) "</code>调用。</p>
 </blockquote>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@app.template_filter</span><span class="p">()</span>

@@ -169,54 +169,62 @@
   <section class="post">
     <h2 id="权限组件源码">权限组件，源码</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def check_permissions(self, request):
-    """
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">check_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="s">"""
     Check if the request should be permitted.
     Raises an appropriate exception if the request is not permitted.
-    """
-    for permission in self.get_permissions():
-        if not permission.has_permission(request, self):
-            self.permission_denied(
-                request, message=getattr(permission, 'message', None)
-            )
+    """</span>
+    <span class="k">for</span> <span class="n">permission</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_permissions</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">permission</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">permission_denied</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">permission</span><span class="p">,</span> <span class="s">'message'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="p">)</span>
 </code></pre></div></div>
 <blockquote>
   <p><code class="highlighter-rouge">self.get_permissions()</code>理解它返回的是啥？</p>
-  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get_permissions(self):
-    """
-    Instantiates and returns the list of permissions that this view requires.
-    """
-    return [permission() for permission in self.permission_classes]
-</code></pre></div>  </div>
-  <p>所以，我们在定制自己的权限组件的时候，应该这样做<br />
-```
-from rest_framework import permissions</p>
 </blockquote>
 
-<p>class BlacklistPermission(permissions.BasePermission):
-    “””
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="s">"""
+    Instantiates and returns the list of permissions that this view requires.
+    """</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">permission</span><span class="p">()</span> <span class="k">for</span> <span class="n">permission</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">permission_classes</span><span class="p">]</span>
+</code></pre></div></div>
+<blockquote>
+  <p>所以，我们在定制自己的权限组件的时候，应该这样做</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">permissions</span>
+
+<span class="k">class</span> <span class="nc">BlacklistPermission</span><span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="s">"""
     Global permission check for blacklisted IPs.
-    “””</p>
+    """</span>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def has_permission(self, request, view):
-    ip_addr = request.META['REMOTE_ADDR']
-    blacklisted = Blacklist.objects.filter(ip_addr=ip_addr).exists()
-    return not blacklisted
-</code></pre></div></div>
+    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="n">ip_addr</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="p">[</span><span class="s">'REMOTE_ADDR'</span><span class="p">]</span>
+        <span class="n">blacklisted</span> <span class="o">=</span> <span class="n">Blacklist</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">ip_addr</span><span class="o">=</span><span class="n">ip_addr</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">blacklisted</span>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;默认权限策略可以使用 `DEFAULT_PERMISSION_CLASSES setting` 全局设置
 </code></pre></div></div>
-<p>REST_FRAMEWORK = {
-    ‘DEFAULT_PERMISSION_CLASSES’: (
-        ‘rest_framework.permissions.IsAuthenticated’,
-    )
-}</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;如果未指定，则此设置默认为允许无限制访问：
+<blockquote>
+  <p>默认权限策略可以使用 <code class="highlighter-rouge">DEFAULT_PERMISSION_CLASSES setting</code> 全局设置</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'DEFAULT_PERMISSION_CLASSES'</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s">'rest_framework.permissions.IsAuthenticated'</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div></div>
-<p>‘DEFAULT_PERMISSION_CLASSES’: (
-   ‘rest_framework.permissions.AllowAny’,
-)
-```</p>
+<blockquote>
+  <p>如果未指定，则此设置默认为允许无限制访问：</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">'DEFAULT_PERMISSION_CLASSES'</span><span class="p">:</span> <span class="p">(</span>
+   <span class="s">'rest_framework.permissions.AllowAny'</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
 
 
   </section>

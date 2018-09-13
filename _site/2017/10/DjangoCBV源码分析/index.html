@@ -183,25 +183,27 @@
 </blockquote>
 
 <p><strong>views.loginView.as_view()的执行流程</strong></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@classonlymethod
-def as_view(cls, **initkwargs):  # 类的方法，cls指的是loginView(那个cls调用，就把那个cls传入)
-    # 此时不需要的关心的代码省略
-    def view(request, *args, **kwargs):
-        self = cls(**initkwargs) # 这个self指的就是loginView的实例对象(根据cls得出)
-        if hasattr(self, 'get') and not hasattr(self, 'head'):
-            self.head = self.get
-        self.request = request
-        self.args = args
-        self.kwargs = kwargs
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@classonlymethod</span>
+<span class="k">def</span> <span class="nf">as_view</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">initkwargs</span><span class="p">):</span>  <span class="c"># 类的方法，cls指的是loginView(那个cls调用，就把那个cls传入)</span>
+    <span class="c"># 此时不需要的关心的代码省略</span>
+    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">initkwargs</span><span class="p">)</span> <span class="c"># 这个self指的就是loginView的实例对象(根据cls得出)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">'get'</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">'head'</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">request</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
         
-        return self.dispatch(request, *args, **kwargs) # 返回dispatch的执行结果,这个地方需要注意的是，self.dispatch查找顺序(先找自己，再找类，再找父类......所有我们可以在类中重写dispatch方法)
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c"># 返回dispatch的执行结果,这个地方需要注意的是，self.dispatch查找顺序(先找自己，再找类，再找父类......所有我们可以在类中重写dispatch方法)</span>
     
-    # 分发，找到loginView中的请求方法，并返回执行结果
-    def dispatch(self, request, *args, **kwargs):
-        if request.method.lower() in self.http_method_names:
-            handler = getattr(self, request.method.lower())
-        return handler(request, *args, **kwargs)
+    <span class="c"># 分发，找到loginView中的请求方法，并返回执行结果</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_method_names</span><span class="p">:</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></div>
+
 <p>从源码分析得出：</p>
 <blockquote>
   <p>url(r”^stark/”,views.view),url在项目启动之后就会执行到这里,直到用户访问<code class="highlighter-rouge">stark/</code>时,就会执行<code class="highlighter-rouge">views.view</code>,找到<code class="highlighter-rouge">dispatch方法</code>并执行,<code class="highlighter-rouge">dispatch方法</code>返回的结果就是用户看到的结果。</p>

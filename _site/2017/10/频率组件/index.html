@@ -169,71 +169,86 @@
   <section class="post">
     <h2 id="频率组件源码">频率组件–源码</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def check_throttles(self, request):
-    """
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">check_throttles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="s">"""
     Check if request should be throttled.
     Raises an appropriate exception if the request is throttled.
-    """
-    for throttle in self.get_throttles():
-        if not throttle.allow_request(request, self):
-            self.throttled(request, throttle.wait())
+    """</span>
+    <span class="k">for</span> <span class="n">throttle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_throttles</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">throttle</span><span class="o">.</span><span class="n">allow_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">throttled</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">throttle</span><span class="o">.</span><span class="n">wait</span><span class="p">())</span>
 </code></pre></div></div>
+
 <blockquote>
   <p><code class="highlighter-rouge">self.get_throttles()</code>理解这句话返回的是什么？</p>
 </blockquote>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get_throttles(self):
-    """
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_throttles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="s">"""
     Instantiates and returns the list of throttles that this view uses.
-    """
-    return [throttle() for throttle in self.throttle_classes]
+    """</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">throttle</span><span class="p">()</span> <span class="k">for</span> <span class="n">throttle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">throttle_classes</span><span class="p">]</span>
 </code></pre></div></div>
+
+<p>所以，来一个实例</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">rest_framework.throttling</span> <span class="kn">import</span> <span class="n">BaseThrottle</span>
+
+<span class="n">VISIT_RECORD</span><span class="o">=</span><span class="p">{}</span>
+<span class="k">class</span> <span class="nc">VisitThrottle</span><span class="p">(</span><span class="n">BaseThrottle</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">=</span><span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">allow_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">request</span><span class="p">,</span><span class="n">view</span><span class="p">):</span>
+        <span class="n">remote_addr</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'REMOTE_ADDR'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">remote_addr</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">time</span>
+        <span class="n">ctime</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">remote_addr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">VISIT_RECORD</span><span class="p">:</span>
+            <span class="n">VISIT_RECORD</span><span class="p">[</span><span class="n">remote_addr</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="n">ctime</span><span class="p">,]</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="n">history</span><span class="o">=</span><span class="n">VISIT_RECORD</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">remote_addr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">=</span><span class="n">history</span>
+
+        <span class="k">while</span> <span class="n">history</span> <span class="ow">and</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span><span class="n">ctime</span><span class="o">-</span><span class="mi">60</span><span class="p">:</span>
+            <span class="n">history</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">:</span>
+            <span class="n">history</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ctime</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">time</span>
+        <span class="n">ctime</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="mi">60</span><span class="o">-</span><span class="p">(</span><span class="n">ctime</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+
 <blockquote>
-  <p>所以，来一个实例
-```
-from rest_framework.throttling import BaseThrottle</p>
+  <p>可以使用 <code class="highlighter-rouge">DEFAULT_THROTTLE_CLASSES</code> 和 <code class="highlighter-rouge">DEFAULT_THROTTLE_RATES</code> setting 全局设置默认限流策略。</p>
 </blockquote>
 
-<p>VISIT_RECORD={}
-class VisitThrottle(BaseThrottle):</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'DEFAULT_THROTTLE_CLASSES'</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s">'rest_framework.throttling.AnonRateThrottle'</span><span class="p">,</span>
+        <span class="s">'rest_framework.throttling.UserRateThrottle'</span>
+    <span class="p">),</span>
+    <span class="s">'DEFAULT_THROTTLE_RATES'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'anon'</span><span class="p">:</span> <span class="s">'100/day'</span><span class="p">,</span>
+        <span class="s">'user'</span><span class="p">:</span> <span class="s">'1000/day'</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def __init__(self):
-    self.history=None
+<blockquote>
+  <p>如果未指定，则此设置默认为允许无限制访问：</p>
+</blockquote>
 
-def allow_request(self,request,view):
-    remote_addr = request.META.get('REMOTE_ADDR')
-    print(remote_addr)
-    import time
-    ctime=time.time()
-
-    if remote_addr not in VISIT_RECORD:
-        VISIT_RECORD[remote_addr]=[ctime,]
-        return True
-
-    history=VISIT_RECORD.get(remote_addr)
-    self.history=history
-
-    while history and history[-1]&lt;ctime-60:
-        history.pop()
-
-    if len(history)&lt;3:
-        history.insert(0,ctime)
-        return True
-    else:
-        return False
-
-def wait(self):
-    import time
-    ctime=time.time()
-    return 60-(ctime-self.history[-1]) ``` &gt;可以使用 `DEFAULT_THROTTLE_CLASSES` 和 `DEFAULT_THROTTLE_RATES` setting 全局设置默认限流策略。 ``` REST_FRAMEWORK = {
-'DEFAULT_THROTTLE_CLASSES': (
-    'rest_framework.throttling.AnonRateThrottle',
-    'rest_framework.throttling.UserRateThrottle'
-),
-'DEFAULT_THROTTLE_RATES': {
-    'anon': '100/day',
-    'user': '1000/day'
-} } ``` &gt;如果未指定，则此设置默认为允许无限制访问： ``` 'DEFAULT_THROTTLE_CLASSES': (), ```
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">'DEFAULT_THROTTLE_CLASSES'</span><span class="p">:</span> <span class="p">(),</span>
 </code></pre></div></div>
 
 
@@ -304,7 +319,7 @@ def wait(self):
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2017/10/%E8%A7%A3%E6%9E%90%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="解析器">上一篇：  <span>解析器</span>
+            <a href="/2017/10/%E8%AE%A4%E8%AF%81%E7%BB%84%E4%BB%B6/" data-toggle="tooltip" data-placement="top" title="认证组件">上一篇：  <span>认证组件</span>
             </a>
         </li>
         

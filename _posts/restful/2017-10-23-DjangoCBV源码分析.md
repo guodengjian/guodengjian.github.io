@@ -14,7 +14,8 @@ tag: restful
 >> url(r"^stark/", views.loginView.as_view()),
 
 **views.loginView.as_view()的执行流程**
-```
+
+```python
 @classonlymethod
 def as_view(cls, **initkwargs):  # 类的方法，cls指的是loginView(那个cls调用，就把那个cls传入)
     # 此时不需要的关心的代码省略
@@ -34,5 +35,6 @@ def as_view(cls, **initkwargs):  # 类的方法，cls指的是loginView(那个cl
             handler = getattr(self, request.method.lower())
         return handler(request, *args, **kwargs)
 ```
+
 从源码分析得出：
 >url(r"^stark/",views.view),url在项目启动之后就会执行到这里,直到用户访问`stark/`时,就会执行`views.view`,找到`dispatch方法`并执行,`dispatch方法`返回的结果就是用户看到的结果。

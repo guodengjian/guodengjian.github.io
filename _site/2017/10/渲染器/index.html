@@ -176,30 +176,32 @@
 
 <h3 id="设置渲染器">设置渲染器</h3>
 <p>可以使用 <code class="highlighter-rouge">DEFAULT_RENDERER_CLASSES</code> 设置全局的默认渲染器集。</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    )
-}
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'DEFAULT_RENDERER_CLASSES'</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s">'rest_framework.renderers.JSONRenderer'</span><span class="p">,</span>
+        <span class="s">'rest_framework.renderers.BrowsableAPIRenderer'</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 <p>还可以使用基于<code class="highlighter-rouge">APIView</code>的视图类来设置单个视图或视图集的渲染器</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from django.contrib.auth.models import User
-from rest_framework.renderers import JSONRenderer
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
-class UserCountView(APIView):
-    """
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">rest_framework.renderers</span> <span class="kn">import</span> <span class="n">JSONRenderer</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
+
+<span class="k">class</span> <span class="nc">UserCountView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="s">"""
     A view that returns the count of active users in JSON.
-    """
-    renderer_classes = (JSONRenderer, )
+    """</span>
+    <span class="n">renderer_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">JSONRenderer</span><span class="p">,</span> <span class="p">)</span>
 
-    def get(self, request, format=None):
-        user_count = User.objects.filter(active=True).count()
-        content = {'user_count': user_count}
-        return Response(content)
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">user_count</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user_count'</span><span class="p">:</span> <span class="n">user_count</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
 </code></pre></div></div>
 

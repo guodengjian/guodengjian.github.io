@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>视图组件</title>
-  <meta name="description" content="视图使用方法  第一种```from rest_framework.views import  APIViewclass AuthorView(APIView): def get():     pass def post():     passclass AuthorDetailView(APIView):	de...">
+  <meta name="description" content="视图使用方法  第一种">
   <meta name="author" content="leopardpan">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="视图组件">
-  <meta name="twitter:description" content="视图使用方法  第一种```from rest_framework.views import  APIViewclass AuthorView(APIView): def get():     pass def post():     passclass AuthorDetailView(APIView):	de...">
+  <meta name="twitter:description" content="视图使用方法  第一种">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="视图组件">
-  <meta property="og:description" content="视图使用方法  第一种```from rest_framework.views import  APIViewclass AuthorView(APIView): def get():     pass def post():     passclass AuthorDetailView(APIView):	de...">
+  <meta property="og:description" content="视图使用方法  第一种">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -169,152 +169,169 @@
   <section class="post">
     <h1 id="视图使用方法">视图使用方法</h1>
 <ol>
-  <li>第一种
-```
-from rest_framework.views import  APIView
-class AuthorView(APIView):
- def get():
-     pass
- def post():
-     pass</li>
+  <li>第一种</li>
 </ol>
 
-<p>class AuthorDetailView(APIView):
-	def get():
-		pass
-	def delete():
-		pass
-    def put():
-        pass</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;解析：基于APIView，不同的url走不同的类，根据请求方法的不同，执行相应的函数
-
-2. 第二种
-</code></pre></div></div>
-<p>from rest_framework.mixins import CreateModelMixin,ListModelMixin,DestroyModelMixin,RetrieveModelMixin,UpdateModelMixin
-from rest_framework.generics import GenericAPIView</p>
-
-<p>class AuthorView(CreateModelMixin,ListModelMixin,GenericAPIView):
-    queryset=Author.objects.all
-	serializer_class=AuthorSerializers</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get(self,request):
-	return self.list(request)
-def post(self,request):
-    return self.create(request)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span>  <span class="n">APIView</span>
+<span class="k">class</span> <span class="nc">AuthorView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">():</span>
+		<span class="k">pass</span>
+	<span class="k">def</span> <span class="nf">post</span><span class="p">():</span>
+		<span class="k">pass</span>
+		
+<span class="k">class</span> <span class="nc">AuthorDetailView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">get</span><span class="p">():</span>
+		<span class="k">pass</span>
+	<span class="k">def</span> <span class="nf">delete</span><span class="p">():</span>
+		<span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">put</span><span class="p">():</span>
+        <span class="k">pass</span>
 </code></pre></div></div>
 
-<p>class AuthorDetailView(DestroyModelMixin,UpdateModelMixin,RetrieveModelMixin,GenericAPIView):
-	queryset = Author.objects.all
-	serializer_class = AuthorSerializers</p>
+<blockquote>
+  <p>解析：基于APIView，不同的url走不同的类，根据请求方法的不同，执行相应的函数</p>
+</blockquote>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get(self,request, *args, **kwargs):
-    return self.retrieve(request, *args, **kwargs)
+<ol>
+  <li>第二种</li>
+</ol>
 
-def put(self,request, *args, **kwargs):
-   return self.update(request, *args, **kwargs)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">rest_framework.mixins</span> <span class="kn">import</span> <span class="n">CreateModelMixin</span><span class="p">,</span><span class="n">ListModelMixin</span><span class="p">,</span><span class="n">DestroyModelMixin</span><span class="p">,</span><span class="n">RetrieveModelMixin</span><span class="p">,</span><span class="n">UpdateModelMixin</span>
+<span class="kn">from</span> <span class="nn">rest_framework.generics</span> <span class="kn">import</span> <span class="n">GenericAPIView</span>
 
-def delete(self,request, *args, **kwargs):
-	return self.destroy(request, *args, **kwargs) ``` 解析:将**请求对应的动作封装到`CreateModelMixin,ListModelMixin,DestroyModelMixin,RetrieveModelMixin,UpdateModelMixin`中，用户发起请求后，不同的请求动作分发到不同的类中对应的方法。** 源码省略。 解析：`GenericAPIView`类封装了`queryset`，`serializer_class`两个属性，通过上述继承关系，用户在定义这两个属性之后，几个`mixins`子类都可以在`GenericAPIView`中拿到对应的值。 源码: ``` class GenericAPIView(views.APIView):
-queryset = None
-serializer_class = None ```
+<span class="k">class</span> <span class="nc">AuthorView</span><span class="p">(</span><span class="n">CreateModelMixin</span><span class="p">,</span><span class="n">ListModelMixin</span><span class="p">,</span><span class="n">GenericAPIView</span><span class="p">):</span>
+    <span class="n">queryset</span><span class="o">=</span><span class="n">Author</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span>
+	<span class="n">serializer_class</span><span class="o">=</span><span class="n">AuthorSerializers</span>
+
+	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">request</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="nb">list</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+					
+<span class="k">class</span> <span class="nc">AuthorDetailView</span><span class="p">(</span><span class="n">DestroyModelMixin</span><span class="p">,</span><span class="n">UpdateModelMixin</span><span class="p">,</span><span class="n">RetrieveModelMixin</span><span class="p">,</span><span class="n">GenericAPIView</span><span class="p">):</span>
+	<span class="n">queryset</span> <span class="o">=</span> <span class="n">Author</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span>
+	<span class="n">serializer_class</span> <span class="o">=</span> <span class="n">AuthorSerializers</span>
+
+	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	   <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>解析:将<strong>请求对应的动作封装到<code class="highlighter-rouge">CreateModelMixin,ListModelMixin,DestroyModelMixin,RetrieveModelMixin,UpdateModelMixin</code>中，用户发起请求后，不同的请求动作分发到不同的类中对应的方法。</strong>
+源码省略。
+解析：<code class="highlighter-rouge">GenericAPIView</code>类封装了<code class="highlighter-rouge">queryset</code>，<code class="highlighter-rouge">serializer_class</code>两个属性，通过上述继承关系，用户在定义这两个属性之后，几个<code class="highlighter-rouge">mixins</code>子类都可以在<code class="highlighter-rouge">GenericAPIView</code>中拿到对应的值。</p>
+
+<p>源码:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">GenericAPIView</span><span class="p">(</span><span class="n">views</span><span class="o">.</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="bp">None</span>
 </code></pre></div></div>
 
 <ol>
-  <li>第三种
-```
-class AuthorView(ListCreateAPIView):
- queryset=Author.objects.all
- serializer_class=AuthorSerializers</li>
+  <li>第三种</li>
 </ol>
 
-<p>class AuthorDetailView(RetrieveUpdateDestroyAPIView):
-	queryset = Author.objects.all
-	serializer_class = AuthorSerializers</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>解析：对第二种的进一步封装，没啥说的，直接看源码
-源码:
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AuthorView</span><span class="p">(</span><span class="n">ListCreateAPIView</span><span class="p">):</span>
+	<span class="n">queryset</span><span class="o">=</span><span class="n">Author</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span>
+	<span class="n">serializer_class</span><span class="o">=</span><span class="n">AuthorSerializers</span>
+
+<span class="k">class</span> <span class="nc">AuthorDetailView</span><span class="p">(</span><span class="n">RetrieveUpdateDestroyAPIView</span><span class="p">):</span>
+	<span class="n">queryset</span> <span class="o">=</span> <span class="n">Author</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span>
+	<span class="n">serializer_class</span> <span class="o">=</span> <span class="n">AuthorSerializers</span>
 </code></pre></div></div>
-<p>class ListCreateAPIView(mixins.ListModelMixin,
-                        mixins.CreateModelMixin,
-                        GenericAPIView):
-    “””
+
+<p>解析：对第二种的进一步封装，没啥说的，直接看源码
+源码:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ListCreateAPIView</span><span class="p">(</span><span class="n">mixins</span><span class="o">.</span><span class="n">ListModelMixin</span><span class="p">,</span>
+                        <span class="n">mixins</span><span class="o">.</span><span class="n">CreateModelMixin</span><span class="p">,</span>
+                        <span class="n">GenericAPIView</span><span class="p">):</span>
+    <span class="s">"""
     Concrete view for listing a queryset or creating a model instance.
-    “””
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)</p>
+    """</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="nb">list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def post(self, request, *args, **kwargs):
-    return self.create(request, *args, **kwargs)
-</code></pre></div></div>
-
-<p>class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
-                                   mixins.UpdateModelMixin,
-                                   mixins.DestroyModelMixin,
-                                   GenericAPIView):
-    “””
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+<span class="k">class</span> <span class="nc">RetrieveUpdateDestroyAPIView</span><span class="p">(</span><span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
+                                   <span class="n">mixins</span><span class="o">.</span><span class="n">UpdateModelMixin</span><span class="p">,</span>
+                                   <span class="n">mixins</span><span class="o">.</span><span class="n">DestroyModelMixin</span><span class="p">,</span>
+                                   <span class="n">GenericAPIView</span><span class="p">):</span>
+    <span class="s">"""
     Concrete view for retrieving, updating or deleting a model instance.
-    “””
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)</p>
+    """</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def put(self, request, *args, **kwargs):
-    return self.update(request, *args, **kwargs)
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-def patch(self, request, *args, **kwargs):
-    return self.partial_update(request, *args, **kwargs)
+    <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">partial_update</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-def delete(self, request, *args, **kwargs):
-    return self.destroy(request, *args, **kwargs) ```
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></div>
 
 <ol>
-  <li>第四种
-```
-from rest_framework.viewsets import ModelViewSet</li>
+  <li>第四种</li>
 </ol>
 
-<p>class AuthorModelView(ModelViewSet):</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">rest_framework.viewsets</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>queryset=Author.objects.all()
-serializer_class=AuthorSerializers
+<span class="k">class</span> <span class="nc">AuthorModelView</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+
+	<span class="n">queryset</span><span class="o">=</span><span class="n">Author</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+	<span class="n">serializer_class</span><span class="o">=</span><span class="n">AuthorSerializers</span>
+	
 </code></pre></div></div>
+<p><strong>最厉害的一种，我们先看看源码</strong></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**最厉害的一种，我们先看看源码**
-
-源码：
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ModelViewSet</span><span class="p">(</span><span class="n">mixins</span><span class="o">.</span><span class="n">CreateModelMixin</span><span class="p">,</span>
+                   <span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
+                   <span class="n">mixins</span><span class="o">.</span><span class="n">UpdateModelMixin</span><span class="p">,</span>
+                   <span class="n">mixins</span><span class="o">.</span><span class="n">DestroyModelMixin</span><span class="p">,</span>
+                   <span class="n">mixins</span><span class="o">.</span><span class="n">ListModelMixin</span><span class="p">,</span>
+                   <span class="n">GenericViewSet</span><span class="p">):</span>
+    <span class="s">"""
+    A viewset that provides default `create()`, `retrieve()`, `update()`,
+    `partial_update()`, `destroy()` and `list()` actions.
+    """</span>
+    <span class="k">pass</span>
 </code></pre></div></div>
-<p>class ModelViewSet(mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin,
-                   mixins.ListModelMixin,
-                   GenericViewSet):
-    “””
-    A viewset that provides default <code class="highlighter-rouge">create()</code>, <code class="highlighter-rouge">retrieve()</code>, <code class="highlighter-rouge">update()</code>,
-    <code class="highlighter-rouge">partial_update()</code>, <code class="highlighter-rouge">destroy()</code> and <code class="highlighter-rouge">list()</code> actions.
-    “””
-    pass</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**好像和第三种没啥区别啊，只是全部继承了，别着急，我们看看URL**
+<p><strong>好像和第三种没啥区别啊，只是全部继承了，别着急，我们看看URL</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>url(r'^authors/$', views.AuthorModelView.as_view({"get":"list","post":"create"})),
+url(r'^authors/(?P&lt;pk&gt;\d+)/$', views.AuthorModelView.as_view({"get":"retrieve","put":"update","delete":"destroy"})),
 </code></pre></div></div>
-<p>url(r’^authors/$’, views.AuthorModelView.as_view({“get”:”list”,”post”:”create”})),
-url(r’^authors/(?P<pk>\d+)/$', views.AuthorModelView.as_view({"get":"retrieve","put":"update","delete":"destroy"})),</pk></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**URL还能带参数，好像很厉害，如何实现分发呢？再看源码**
-&gt;viewsets.py(下面源码的出处，免得搞混了)
+<p><strong>URL还能带参数，好像很厉害，如何实现分发呢？再看源码</strong></p>
+<blockquote>
+  <p>viewsets.py(下面源码的出处，免得搞混了)</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@classonlymethod</span> <span class="c"># 等同于classmethod</span>
+<span class="k">def</span> <span class="nf">as_view</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">actions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">initkwargs</span><span class="p">):</span>   <span class="c"># actions接受URL中的参数</span>
+    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c"># 用户发起请求，URL匹配成功后执行</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">initkwargs</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span> <span class="o">=</span> <span class="n">actions</span>
+    
+        <span class="k">for</span> <span class="n">method</span><span class="p">,</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c"># 遍历，取键值对赋值</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>     <span class="c"># 获取变量action对应的方法，赋值给handler。如:handler = self.list</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>      <span class="c"># 设置self的属性。如self.get = self.list</span>
+    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c"># 分发</span>
+    
+    <span class="k">return</span> <span class="n">view</span>
 </code></pre></div></div>
-<p>@classonlymethod # 等同于classmethod
-def as_view(cls, actions=None, <strong>initkwargs):   # actions接受URL中的参数
-    def view(request, *args, **kwargs):  # 用户发起请求，URL匹配成功后执行
-        self = cls(</strong>initkwargs)</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    self.action_map = actions
-
-    for method, action in actions.items():  # 遍历，取键值对赋值
-        handler = getattr(self, action)     # 获取变量action对应的方法，赋值给handler。如:handler = self.list
-        setattr(self, method, handler)      # 设置self的属性。如self.get = self.list
-
-    return self.dispatch(request, *args, **kwargs) # 分发
-
-return view ``` **结论：URL中的键值对参数，经过处理之后，用户成功匹配不同的URL之后，根据不同的请求方法，会执行请求方法对应的封装好的其他方法。**
-</code></pre></div></div>
+<p><strong>结论：URL中的键值对参数，经过处理之后，用户成功匹配不同的URL之后，根据不同的请求方法，会执行请求方法对应的封装好的其他方法。</strong></p>
 
 
 
